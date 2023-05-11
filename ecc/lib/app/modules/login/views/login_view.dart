@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 void main() => runApp(LoginView());
 
@@ -16,65 +18,41 @@ class LoginView extends StatelessWidget {
 }
 
 class LoginPage extends StatelessWidget {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  Future<UserCredential?> _signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
+
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final UserCredential userCredential =
+        await _auth.signInWithCredential(credential);
+
+    return userCredential;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.only(top: 40),
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8.0),
-                      topRight: Radius.circular(8.0),
-                    ),
-                    child: Image.asset('assets/ecc.jpg',
-                        width: 200, height: 300, fit: BoxFit.contain),
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Login Name',
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.8),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40.0),
-                    child: TextField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.8),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 40.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // TODO: Handle login button press
-                      },
-                      child: Text('Login'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+    return Scaffold(
+      body: Center(
+        child: ElevatedButton.icon(
+          onPressed: () {
+            _signInWithGoogle().then((UserCredential? userCredential) {
+              if (userCredential != null) {
+                // User signed in successfully, navigate to the next screen
+              } else {
+                // Failed to sign in
+              }
+            });
+          },
+          icon: Icon(Icons.login),
+          label: Text('Sign in with Google'),
         ),
       ),
     );
