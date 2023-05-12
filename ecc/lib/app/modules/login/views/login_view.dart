@@ -1,10 +1,15 @@
+import 'package:ecc/app/modules/home/views/home_view.dart';
+import 'package:ecc/app/routes/app_pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-void main() => runApp(LoginView());
+void main() => runApp(const LoginView());
 
 class LoginView extends StatelessWidget {
+  const LoginView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,6 +25,8 @@ class LoginView extends StatelessWidget {
 class LoginPage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  LoginPage({super.key});
 
   Future<UserCredential?> _signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -39,20 +46,43 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton.icon(
-          onPressed: () {
-            _signInWithGoogle().then((UserCredential? userCredential) {
-              if (userCredential != null) {
-                // User signed in successfully, navigate to the next screen
-              } else {
-                // Failed to sign in
-              }
-            });
-          },
-          icon: Icon(Icons.login),
-          label: Text('Sign in with Google'),
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            const Positioned.fill(
+              child: Image(
+                image: AssetImage('assets/images/background.jpg'),
+                fit: BoxFit.fill,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 400),
+              child: Center(
+                child: Positioned(
+                  bottom: 90,
+                  child: IconButton(
+                    icon: Image.asset('assets/images/google-logo.jpg'),
+                    iconSize: 150,
+                    onPressed: () {
+                      _signInWithGoogle()
+                          .then((UserCredential? userCredential) {
+                        if (userCredential != null) {
+                          print(userCredential.user);
+                          Get.off(const HomeView());
+                          // User signed in successfully, navigate to the next screen
+                        } else {
+                          // Failed to sign in
+                        }
+                      });
+                    },
+                    //   },
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
