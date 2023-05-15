@@ -1,23 +1,28 @@
+import 'dart:io';
+
+import 'package:ecc/app/modules/noticias/model/noticias_model.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+
+enum TiposTitulo { edicao, inclusao }
 
 class NoticiasEditController extends GetxController {
-  //TODO: Implement NoticiasEditController
+  var noticiasModel = NoticiasModel().obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  String titulo({TiposTitulo param = TiposTitulo.inclusao}) {
+    return (param == TiposTitulo.inclusao
+        ? 'Inclusão de Noticias'
+        : 'Edição de notíocias');
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  late File selectedImage = File('');
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
 
-  void increment() => count.value++;
+    if (pickedImage != null) {
+      selectedImage = File(pickedImage.path);
+    }
+  }
 }

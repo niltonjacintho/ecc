@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecc/app/modules/noticias/noticias_edit/views/noticias_noticias_edit_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -25,8 +26,8 @@ class NoticiasListView extends GetView<NoticiasListController> {
                 color: Colors.blue,
               ),
               onPressed: () {
+                Get.to(NoticiasEditView());
                 noticiasListController.getDados();
-                print('done'); // do something
               },
             ),
           ),
@@ -54,7 +55,6 @@ class NoticiasListView extends GetView<NoticiasListController> {
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data() as Map<String, dynamic>;
-              print(data['pasta'] ?? '--');
               // Exiba os dados do documento
               return ListTile(
                 title: Text(data['pasta'] ?? '--'),

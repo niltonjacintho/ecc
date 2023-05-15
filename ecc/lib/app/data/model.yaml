@@ -1,0 +1,11 @@
+noticias:
+  - data: 2023-01-01
+    titulo: ''
+    subtitulo: ''
+    noticia: ''
+    autor: ''
+    publicar_de: 2023-01-01
+    publicar_ate: 2023-01-01
+    imagem:
+      - nome: ''
+        endereco: ''

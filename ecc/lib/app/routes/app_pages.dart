@@ -35,7 +35,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.NOTICIAS_NOTICIAS_EDIT,
-      page: () => const NoticiasEditView(),
+      page: () => NoticiasEditView(),
       binding: NoticiasEditBinding(),
     ),
   ];
