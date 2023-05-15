@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
-class NoticiasNoticiasListController extends GetxController {
+class NoticiasListController extends GetxController {
   getDados() {
+    print('entrou');
     FirebaseFirestore.instance
         .collection('ecc') // Substitua pelo nome da sua coleção
         .snapshots() // Obtenha um stream de snapshots

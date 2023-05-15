@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class NoticiasNoticiasEditController extends GetxController {
-  //TODO: Implement NoticiasNoticiasEditController
+class NoticiasEditController extends GetxController {
+  //TODO: Implement NoticiasEditController
 
   final count = 0.obs;
   @override

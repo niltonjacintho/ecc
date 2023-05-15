@@ -31,12 +31,12 @@ class AppPages {
     GetPage(
       name: _Paths.NOTICIAS_NOTICIAS_LIST,
       page: () => const NoticiasListView(),
-      binding: NoticiasNoticiasListBinding(),
+      binding: NoticiasListBinding(),
     ),
     GetPage(
       name: _Paths.NOTICIAS_NOTICIAS_EDIT,
-      page: () => const NoticiasNoticiasEditView(),
-      binding: NoticiasNoticiasEditBinding(),
+      page: () => const NoticiasEditView(),
+      binding: NoticiasEditBinding(),
     ),
   ];
 }

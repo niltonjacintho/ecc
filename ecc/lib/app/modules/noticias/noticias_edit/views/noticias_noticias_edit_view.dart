@@ -4,18 +4,18 @@ import 'package:get/get.dart';
 
 import '../controllers/noticias_noticias_edit_controller.dart';
 
-class NoticiasNoticiasEditView extends GetView<NoticiasNoticiasEditController> {
-  const NoticiasNoticiasEditView({Key? key}) : super(key: key);
+class NoticiasEditView extends GetView<NoticiasEditController> {
+  const NoticiasEditView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('NoticiasNoticiasEditView'),
+        title: const Text('NoticiasEditView'),
         centerTitle: true,
       ),
       body: const Center(
         child: Text(
-          'NoticiasNoticiasEditView is working',
+          'NoticiasEditView is working',
           style: TextStyle(fontSize: 20),
         ),
       ),

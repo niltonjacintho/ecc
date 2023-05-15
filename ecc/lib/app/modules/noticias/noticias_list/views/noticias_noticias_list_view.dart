@@ -5,12 +5,13 @@ import 'package:get/get.dart';
 
 import '../controllers/noticias_noticias_list_controller.dart';
 
-class NoticiasListView extends GetView<NoticiasNoticiasListController> {
+class NoticiasListView extends GetView<NoticiasListController> {
   const NoticiasListView({Key? key}) : super(key: key);
-
+  static NoticiasListController noticiasListController =
+      Get.put(NoticiasListController());
   @override
   Widget build(BuildContext context) {
-    controller.getDados();
+    //controller.getDados();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nossas notícias'),
@@ -24,14 +25,18 @@ class NoticiasListView extends GetView<NoticiasNoticiasListController> {
                 color: Colors.blue,
               ),
               onPressed: () {
-                // do something
+                noticiasListController.getDados();
+                print('done'); // do something
               },
             ),
           ),
         ],
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('artigos').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('artigos')
+            .where('pasta', isNotEqualTo: null)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Center(
@@ -44,17 +49,17 @@ class NoticiasListView extends GetView<NoticiasNoticiasListController> {
               child: CircularProgressIndicator(),
             );
           }
-
+          print(snapshot);
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data() as Map<String, dynamic>;
-
+              print(data['pasta'] ?? '--');
               // Exiba os dados do documento
               return ListTile(
-                title: Text(data['titulo']),
-                subtitle: Text(data['subtitulo']),
-                trailing: Text(data['data_inicio_publicacao']),
+                title: Text(data['pasta'] ?? '--'),
+                subtitle: Text(data['pasta_coordenador'] ?? '--'),
+                trailing: Text(data['pasta_descricao'] ?? '-'),
               );
             }).toList(),
           );
