@@ -7,8 +7,10 @@ import '../controllers/noticias_noticias_list_controller.dart';
 
 class NoticiasListView extends GetView<NoticiasNoticiasListController> {
   const NoticiasListView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    controller.getDados();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Nossas notícias'),
@@ -29,8 +31,7 @@ class NoticiasListView extends GetView<NoticiasNoticiasListController> {
         ],
       ),
       body: StreamBuilder(
-        stream:
-            FirebaseFirestore.instance.collection('sua_colecao').snapshots(),
+        stream: FirebaseFirestore.instance.collection('artigos').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return const Center(

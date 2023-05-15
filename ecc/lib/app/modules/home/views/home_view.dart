@@ -55,7 +55,7 @@ class HomeView extends GetView<HomeController> {
           MenuItemModel(
             child: Image.asset('assets/images/schemes_icon.png',
                 color: Colors.white),
-            title: "Notícias",
+            title: "Notícias..",
             titleColor: Colors.white,
             subtitle: "Notícias do nosso ECC",
             subTitleColor: Colors.white,
