@@ -8,6 +8,8 @@ import '../modules/noticias/noticias_edit/bindings/noticias_noticias_edit_bindin
 import '../modules/noticias/noticias_edit/views/noticias_noticias_edit_view.dart';
 import '../modules/noticias/noticias_list/bindings/noticias_noticias_list_binding.dart';
 import '../modules/noticias/noticias_list/views/noticias_noticias_list_view.dart';
+import '../modules/noticias/view/bindings/noticias_view_binding.dart';
+import '../modules/noticias/view/views/noticias_view_view.dart';
 
 part 'app_routes.dart';
 
@@ -16,6 +18,7 @@ class AppPages {
 
   static const INITIAL = Routes.HOME;
   static const LOGIN = Routes.LOGIN;
+  static const NOTICIAS_VIEW = Routes.NOTICIAS_VIEW;
 
   static final routes = [
     GetPage(
@@ -37,6 +40,11 @@ class AppPages {
       name: _Paths.NOTICIAS_NOTICIAS_EDIT,
       page: () => NoticiasEditView(),
       binding: NoticiasEditBinding(),
+    ),
+    GetPage(
+      name: _Paths.NOTICIAS_VIEW,
+      page: () => const NoticiasView(),
+      binding: NoticiasViewBinding(),
     ),
   ];
 }

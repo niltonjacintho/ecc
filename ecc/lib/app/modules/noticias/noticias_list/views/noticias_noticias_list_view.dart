@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecc/app/modules/noticias/noticias_edit/views/noticias_noticias_edit_view.dart';
+import 'package:ecc/app/modules/noticias/view/views/noticias_view_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -50,16 +51,43 @@ class NoticiasListView extends GetView<NoticiasListController> {
               child: CircularProgressIndicator(),
             );
           }
-          print(snapshot);
           return ListView(
             children: snapshot.data!.docs.map((DocumentSnapshot document) {
               Map<String, dynamic> data =
                   document.data() as Map<String, dynamic>;
               // Exiba os dados do documento
-              return ListTile(
-                title: Text(data['pasta'] ?? '--'),
-                subtitle: Text(data['pasta_coordenador'] ?? '--'),
-                trailing: Text(data['pasta_descricao'] ?? '-'),
+              return Padding(
+                padding: const EdgeInsets.all(10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 216, 228, 246),
+                    border: Border.all(
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ListTile(
+                    leading: data['urlImagemPrincipal'] != null
+                        ? Container(
+                            child: Image.network(
+                            data['urlImagemPrincipal'],
+                          ))
+                        : const Text(
+                            '.',
+                          ),
+                    title: Text(
+                      data['titulo'] ?? '--',
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(data['subtitulo'] ?? '--'),
+                    onTap: () => {
+                      noticiasListController.currentId.value =
+                          document.id.toString(),
+                      Get.to(const NoticiasView())
+                    },
+                  ),
+                ),
               );
             }).toList(),
           );

@@ -6,6 +6,7 @@ class NoticiasModel {
   String? autor;
   String? publicarDe;
   String? publicarAte;
+  String? urlImagemPrincipal;
   List<Imagem>? imagem;
 
   NoticiasModel(
@@ -16,6 +17,7 @@ class NoticiasModel {
       this.autor,
       this.publicarDe,
       this.publicarAte,
+      this.urlImagemPrincipal,
       this.imagem});
 
   NoticiasModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class NoticiasModel {
     autor = json['autor'];
     publicarDe = json['publicar_de'];
     publicarAte = json['publicar_ate'];
+    urlImagemPrincipal = json['urlImagemPrincipal'];
     if (json['imagem'] != null) {
       imagem = <Imagem>[];
       json['imagem'].forEach((v) {
@@ -43,6 +46,7 @@ class NoticiasModel {
     data['autor'] = autor;
     data['publicar_de'] = publicarDe;
     data['publicar_ate'] = publicarAte;
+    data['urlImagemPrincipal'] = urlImagemPrincipal;
     if (imagem != null) {
       data['imagem'] = imagem!.map((v) => v.toJson()).toList();
     }
