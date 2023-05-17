@@ -57,7 +57,7 @@ class NoticiasEditView extends GetView<NoticiasEditController> {
     try {
       await Firebase.initializeApp();
       final CollectionReference dadosRef =
-          FirebaseFirestore.instance.collection('artigos');
+          FirebaseFirestore.instance.collection('noticias');
       await dadosRef.add(noticiasEditController.noticiasModel.value.toJson());
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Dados salvos com sucesso!')),

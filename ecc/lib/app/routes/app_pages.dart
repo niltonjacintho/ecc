@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/config/bindings/config_binding.dart';
+import '../modules/config/views/config_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -33,7 +35,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.NOTICIAS_NOTICIAS_LIST,
-      page: () => const NoticiasListView(),
+      page: () => NoticiasListView(),
       binding: NoticiasListBinding(),
     ),
     GetPage(
@@ -45,6 +47,11 @@ class AppPages {
       name: _Paths.NOTICIAS_VIEW,
       page: () => const NoticiasView(),
       binding: NoticiasViewBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONFIG,
+      page: () => const ConfigView(),
+      binding: ConfigBinding(),
     ),
   ];
 }

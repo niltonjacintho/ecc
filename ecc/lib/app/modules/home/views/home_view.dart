@@ -60,7 +60,7 @@ class HomeView extends GetView<HomeController> {
             subtitle: "Notícias do nosso ECC",
             subTitleColor: Colors.white,
             backgroundColor: const Color.fromARGB(255, 36, 1, 13),
-            onTap: () => Get.to(const NoticiasListView()),
+            onTap: () => Get.to(NoticiasListView()),
             elevation: 10,
           ),
           MenuItemModel(
