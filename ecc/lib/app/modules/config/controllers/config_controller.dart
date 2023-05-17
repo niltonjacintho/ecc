@@ -18,6 +18,9 @@ class ConfigController extends GetxController {
   NoticiasListController noticiasListController =
       Get.put(NoticiasListController());
 
+  final TextStyle estiloTitulo = const TextStyle(
+      fontSize: 94, fontWeight: FontWeight.w900, color: Colors.black26);
+
   AppBar padraoBar({String titulo = '', bool allowEdit = true}) {
     return AppBar(
       backgroundColor: Colors.transparent,
