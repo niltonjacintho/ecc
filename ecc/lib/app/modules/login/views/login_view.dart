@@ -1,5 +1,4 @@
 import 'package:ecc/app/modules/home/views/home_view.dart';
-import 'package:ecc/app/routes/app_pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -46,43 +45,33 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            const Positioned.fill(
-              child: Image(
-                image: AssetImage('assets/images/background.jpg'),
-                fit: BoxFit.fill,
-              ),
+    return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: IconButton(
+        icon: Image.asset('assets/images/google-logo.jpg'),
+        iconSize: 150,
+        onPressed: () {
+          _signInWithGoogle().then((UserCredential? userCredential) {
+            if (userCredential != null) {
+              print(userCredential.user);
+              Get.off(const HomeView());
+              // User signed in successfully, navigate to the next screen
+            } else {
+              // Failed to sign in
+            }
+          });
+        },
+      ),
+      body: SizedBox.expand(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/background.jpg'),
+              fit: BoxFit.cover,
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 400),
-              child: Center(
-                child: Positioned(
-                  bottom: 90,
-                  child: IconButton(
-                    icon: Image.asset('assets/images/google-logo.jpg'),
-                    iconSize: 150,
-                    onPressed: () {
-                      _signInWithGoogle()
-                          .then((UserCredential? userCredential) {
-                        if (userCredential != null) {
-                          print(userCredential.user);
-                          Get.off(const HomeView());
-                          // User signed in successfully, navigate to the next screen
-                        } else {
-                          // Failed to sign in
-                        }
-                      });
-                    },
-                    //   },
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

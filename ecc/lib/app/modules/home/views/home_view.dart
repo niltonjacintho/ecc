@@ -1,3 +1,4 @@
+import 'package:ecc/app/modules/encontrista/views/encontrista_view.dart';
 import 'package:ecc/app/modules/login/views/login_view.dart';
 import 'package:ecc/app/modules/noticias/noticias_list/views/noticias_noticias_list_view.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +16,16 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: buildBoomMenu(),
-      appBar: AppBar(
-        title: const Text('HomeView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'HomeView is working',
-          style: TextStyle(fontSize: 20),
+      body: SizedBox.expand(
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/fundoGeral.jpg'),
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
       ),
     );
@@ -71,7 +74,7 @@ class HomeView extends GetView<HomeController> {
             subtitle: "Permite atualizar todos os seus dados",
             subTitleColor: Colors.grey[850]!,
             backgroundColor: Colors.grey[50]!,
-            onTap: () => print('THIRD CHILD'),
+            onTap: () => Get.to(const EncontristaView()),
             elevation: 10,
           ),
           MenuItemModel(

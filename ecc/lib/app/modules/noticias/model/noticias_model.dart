@@ -1,12 +1,12 @@
 class NoticiasModel {
-  String? data;
-  String? titulo;
-  String? subtitulo;
-  String? noticia;
-  String? autor;
-  String? publicarDe;
-  String? publicarAte;
-  String? urlImagemPrincipal;
+  String? data = '';
+  String? titulo = '';
+  String? subtitulo = '';
+  String? noticia = '';
+  String? autor = '';
+  String? publicarDe = '';
+  String? publicarAte = '';
+  String? urlImagemPrincipal = '';
   List<Imagem>? imagem;
 
   NoticiasModel(

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/noticias/noticias_edit/views/noticias_noticias_edit_view.dart';
+import 'package:ecc/app/modules/noticias/view/controllers/noticias_view_controller.dart';
 import 'package:ecc/app/modules/noticias/view/views/noticias_view_view.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +13,10 @@ import '../controllers/noticias_noticias_list_controller.dart';
 class NoticiasListView extends GetView<NoticiasListController> {
   NoticiasListView({Key? key}) : super(key: key);
   ConfigController configController = Get.put(ConfigController());
-  static NoticiasListController noticiasListController =
+  NoticiasListController noticiasListController =
       Get.put(NoticiasListController());
+  NoticiasViewController noticiasViewController =
+      Get.put(NoticiasViewController());
   @override
   Widget build(BuildContext context) {
     //controller.getDados();
@@ -107,10 +110,14 @@ class NoticiasListView extends GetView<NoticiasListController> {
                           ],
                         ),
                         subtitle: Text(data['subtitulo'] ?? '--'),
-                        onTap: () => {
-                          configController.noticiaCurrentId.value =
-                              document.id.toString(),
-                          Get.to(const NoticiasView())
+                        onTap: () async => {
+                          await configController
+                              .setCurrentId(document.id.toString())
+                              .then((value) async => {
+                                    await noticiasViewController
+                                        .fetchDocument(),
+                                    Get.to(const NoticiasView())
+                                  }),
                         },
                       ),
                     ),

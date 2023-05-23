@@ -9,3 +9,39 @@ noticias:
     imagem:
       - nome: ''
         endereco: ''
+
+encontrista:
+ ele:
+  nome: ''
+  photo: ''
+  nascimento: 2021-01-01
+  telefone:
+    - numero: ''
+      principal: true
+  email: ''
+ela:
+  nome: ''
+  photo: ''
+  nascimento: 2021-01-01
+  telefone:
+    - numero: ''
+      principal: true
+  email: ''
+endereco:
+  logradouro: ''
+  bairro: ''
+  cidade: ''
+  estado: ''
+  cep: 0
+  complemento:
+casamento:
+  data: 2021-01-01
+  igreja: ''
+filhos:
+  - nome: ''
+    data_nascimento: 2021-01-01
+encontro:
+  - equipe: ''
+    ano: 9999
+    coordenador: true
+

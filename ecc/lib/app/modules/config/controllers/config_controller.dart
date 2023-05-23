@@ -7,9 +7,14 @@ import 'package:get/get.dart';
 class ConfigController extends GetxController {
   //TODO: Implement ConfigController
 
-  final count = 0.obs;
+  final RxDouble _fontSize = 30.0.obs;
+  double get fontSize => _fontSize.value;
+  set fontSize(double value) => {
+        _fontSize.value = value,
+        _fontSize.value < 10 ? _fontSize.value = 10 : null,
+        _fontSize.value > 60 ? _fontSize.value = 60 : null,
+      };
 
-  void increment() => count.value++;
   RxString noticiaCurrentId = '4444'.obs;
 
   AssetImage appBarBackGroundImage =
@@ -17,6 +22,12 @@ class ConfigController extends GetxController {
 
   NoticiasListController noticiasListController =
       Get.put(NoticiasListController());
+
+  Future<String> setCurrentId(String id) {
+    noticiaCurrentId.value = id;
+
+    return Future.value(id);
+  }
 
   final TextStyle estiloTitulo = const TextStyle(
       fontSize: 94, fontWeight: FontWeight.w900, color: Colors.black26);

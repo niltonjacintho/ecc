@@ -7,7 +7,7 @@ class NoticiasViewController extends GetxController {
   var noticia = NoticiasModel().obs;
   ConfigController configController = Get.put(ConfigController());
 
-  void fetchDocument() async {
+  Future<String> fetchDocument() async {
     final DocumentSnapshot<Map<String, dynamic>> snapshot =
         await configController.getDocumentById(
             'noticias', configController.noticiaCurrentId.value);
@@ -26,5 +26,6 @@ class NoticiasViewController extends GetxController {
     } else {
       // Document with the specified ID does not exist
     }
+    return Future.value('');
   }
 }

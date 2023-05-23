@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 
 import '../modules/config/bindings/config_binding.dart';
 import '../modules/config/views/config_view.dart';
+import '../modules/encontrista/bindings/encontrista_binding.dart';
+import '../modules/encontrista/views/encontrista_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -52,6 +54,11 @@ class AppPages {
       name: _Paths.CONFIG,
       page: () => const ConfigView(),
       binding: ConfigBinding(),
+    ),
+    GetPage(
+      name: _Paths.ENCONTRISTA,
+      page: () => const EncontristaView(),
+      binding: EncontristaBinding(),
     ),
   ];
 }
