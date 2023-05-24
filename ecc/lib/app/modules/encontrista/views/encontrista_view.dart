@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:form_page_view/enum/progress_enum.dart';
-import 'package:form_page_view/models/form_page_model.dart';
-import 'package:form_page_view/form_page_view.dart';
-import 'package:form_page_view/models/form_page_style.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:intl/intl.dart';
 
 import 'package:get/get.dart';
 
@@ -10,227 +9,121 @@ import '../controllers/encontrista_controller.dart';
 
 class EncontristaView extends GetView<EncontristaController> {
   const EncontristaView({Key? key}) : super(key: key);
+  static EncontristaController encontristaController =
+      Get.put(EncontristaController());
+
   @override
   Widget build(BuildContext context) {
+    final pageformKey = GlobalKey<FormState>();
+    PageController pageController = PageController();
     return Scaffold(
       appBar: AppBar(
         title: const Text('EncontristaView'),
         centerTitle: true,
       ),
-      body: const MyHomePage(),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 8,
+            child: PageView(
+              scrollDirection: Axis.vertical,
+              pageSnapping: true,
+              physics: const BouncingScrollPhysics(),
+              controller: pageController,
+              children: <Widget>[
+                widgetPessoal(context, pageformKey),
+                Text(encontristaController.listaPaginas[1]['nome']!),
+                Text(encontristaController.listaPaginas[2]['nome']!),
+                Text(encontristaController.listaPaginas[3]['nome']!),
+                Text(encontristaController.listaPaginas[4]['nome']!),
+              ],
+              onPageChanged: (num) {
+                //pageController.jumpToPage(3);
+                print("Número da página atual : $num");
+              },
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  child: const Text('Voltar'),
+                  onPressed: () {
+                    pageController.previousPage(
+                        duration: const Duration(microseconds: 10),
+                        curve: Curves.bounceIn);
+                  },
+                ),
+                ElevatedButton(
+                  child: const Text('Próxima'),
+                  onPressed: () {
+                    pageController.nextPage(
+                        duration: const Duration(microseconds: 10),
+                        curve: Curves.bounceIn);
+                  },
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
-}
-
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // Forms keys
-    final GlobalKey<FormState> formKeyPage1 = GlobalKey<FormState>();
-    final GlobalKey<FormState> formKeyPage2 = GlobalKey<FormState>();
-    final GlobalKey<FormState> formKeyPage3 = GlobalKey<FormState>();
+  Widget widgetPessoal(BuildContext context, GlobalKey<FormState> formkey) {
+    final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
 
-    // Controllers
-    final emailController = TextEditingController();
-    final usernameController = TextEditingController();
-    final firstNameController = TextEditingController();
-    final lastNameController = TextEditingController();
-
-    // Create a list of FormPageModel objects representing the form pages
-    final pages = [
-      FormPageModel(
-        formKey: formKeyPage1,
-        title: 'Dados do casal',
-        textButton: 'Next',
-        body: Form(
-          key: formKeyPage1,
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: usernameController,
-                decoration: const InputDecoration(labelText: 'Username'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a username';
-                  }
-                  return null;
-                },
-              )
-            ],
+    return MaterialApp(
+      home: Scaffold(
+        //body: Text(encontristaController.listaPaginas[0]['nome']!),
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: FormBuilder(
+            key: formKey,
+            child: Column(
+              children: [
+                FormBuilderTextField(
+                  name: 'nome',
+                  decoration: const InputDecoration(labelText: 'Nome'),
+                  validator: FormBuilderValidators.required(),
+                ),
+                FormBuilderDateTimePicker(
+                  name: 'nascimento',
+                  decoration: const InputDecoration(labelText: 'Nascimento'),
+                  inputType: InputType.date,
+                  format: DateFormat('dd-MM-yyyy'),
+                  validator: FormBuilderValidators.required(),
+                ),
+                FormBuilderTextField(
+                  name: 'telefone',
+                  decoration:
+                      const InputDecoration(labelText: 'Número de telefone'),
+                  validator: FormBuilderValidators.required(),
+                ),
+                FormBuilderTextField(
+                  name: 'email',
+                  decoration: const InputDecoration(labelText: 'Email'),
+                  validator: FormBuilderValidators.required(),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      final formData = formKey.currentState!.value;
+                      print(formData);
+                      // Faça algo com os dados do formulário aqui
+                    }
+                  },
+                  child: const Text('Enviar'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-      FormPageModel(
-        formKey: formKeyPage1,
-        title: 'Como falamos com vocês',
-        textButton: 'Next',
-        body: Form(
-          key: formKeyPage1,
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: usernameController,
-                decoration: const InputDecoration(labelText: 'Username'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a username';
-                  }
-                  return null;
-                },
-              )
-            ],
-          ),
-        ),
-      ),
-      FormPageModel(
-        formKey: formKeyPage2,
-        title: 'Seu casamento',
-        textButton: 'Next',
-        body: Form(
-          key: formKeyPage2,
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: firstNameController,
-                decoration: const InputDecoration(labelText: 'First Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your first name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: lastNameController,
-                decoration: const InputDecoration(labelText: 'Last Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your last name';
-                  }
-                  return null;
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      FormPageModel(
-        formKey: formKeyPage3,
-        title: 'Filhos',
-        textButton: 'Next',
-        body: Form(
-          key: formKeyPage3,
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      FormPageModel(
-        formKey: formKeyPage3,
-        title: 'E.C.C.',
-        textButton: 'Next',
-        body: Form(
-          key: formKeyPage3,
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      FormPageModel(
-        formKey: formKeyPage3,
-        title: 'Filhos',
-        textButton: 'Next',
-        body: Form(
-          key: formKeyPage3,
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      FormPageModel(
-        formKey: formKeyPage3,
-        title: 'Seu endereço',
-        textButton: 'Next',
-        body: Form(
-          key: formKeyPage3,
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-    ];
-
-    const style = FormPageStyle(
-      backgroundColor: Colors.white,
-      buttonHeight: 60,
-    );
-
-    return FormPageView(
-      controller: PageController(),
-      progress: ProgressIndicatorType.circular,
-      pages: pages,
-      style: style,
-      onFormSubmitted: () {
-        // print all the values
-        print('Username: ${usernameController.text}');
-        print('First Name: ${firstNameController.text}');
-        print('Last Name: ${lastNameController.text}');
-        print('Email: ${emailController.text}');
-      },
     );
   }
 }

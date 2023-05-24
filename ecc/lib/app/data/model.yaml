@@ -11,7 +11,7 @@ noticias:
         endereco: ''
 
 encontrista:
- ele:
+ marido:
   nome: ''
   photo: ''
   nascimento: 2021-01-01
@@ -19,13 +19,11 @@ encontrista:
     - numero: ''
       principal: true
   email: ''
-ela:
+esposa:
   nome: ''
   photo: ''
   nascimento: 2021-01-01
-  telefone:
-    - numero: ''
-      principal: true
+  telefone: ''
   email: ''
 endereco:
   logradouro: ''
@@ -40,8 +38,21 @@ casamento:
 filhos:
   - nome: ''
     data_nascimento: 2021-01-01
+    sexo: ''
 encontro:
   - equipe: ''
     ano: 9999
     coordenador: true
+    observacao: ''
+
+
+formularios:
+  nome:
+  titulo:
+  subtitulo:
+  descricao:
+  campos:
+    - nome:
+      tipo:
+
 

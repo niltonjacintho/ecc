@@ -3,21 +3,12 @@ import 'package:get/get.dart';
 class EncontristaController extends GetxController {
   //TODO: Implement EncontristaController
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
+  final listaPaginas = [
+    {'nome': 'Esposa', 'descricao': 'Dados do Casal'},
+    {'nome': 'Marido', 'descricao': 'Dados do Casal'},
+    {'nome': 'Casamento', 'descricao': 'Dados do Casal'},
+    {'nome': 'Filhos', 'descricao': 'Dados do Casal'},
+    {'nome': 'Encontros', 'descricao': 'Dados do Casal'},
+    {'nome': 'Endereços', 'descricao': 'Dados do Casal'}
+  ];
 }
