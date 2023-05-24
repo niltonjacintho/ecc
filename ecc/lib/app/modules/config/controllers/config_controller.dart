@@ -3,12 +3,24 @@ import 'package:ecc/app/modules/noticias/noticias_edit/views/noticias_noticias_e
 import 'package:ecc/app/modules/noticias/noticias_list/controllers/noticias_noticias_list_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ConfigController extends GetxController {
   //TODO: Implement ConfigController
 
   final RxDouble _fontSize = 30.0.obs;
   double get fontSize => _fontSize.value;
+
+  MaskTextInputFormatter get phoneMaskFormatter => MaskTextInputFormatter(
+      mask: '(##) #-####-####',
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy);
+
+  MaskTextInputFormatter get dateMaskFormatter => MaskTextInputFormatter(
+      mask: '##/##/####',
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy);
+
   set fontSize(double value) => {
         _fontSize.value = value,
         _fontSize.value < 10 ? _fontSize.value = 10 : null,

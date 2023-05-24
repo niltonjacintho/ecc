@@ -12,12 +12,11 @@ class EncontristaView extends GetView<EncontristaController> {
 
   @override
   Widget build(BuildContext context) {
-    EsposaForm esposaForm = Get.put(EsposaForm());
-    final pageformKey = GlobalKey<FormState>();
+    EsposaFormView esposaForm = Get.put(EsposaFormView());
     PageController pageController = PageController();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('EncontristaView'),
+        title: const Text('Atualize sues dados'),
         centerTitle: true,
       ),
       body: Column(

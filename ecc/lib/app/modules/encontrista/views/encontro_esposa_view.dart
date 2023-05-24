@@ -1,69 +1,103 @@
+import 'package:ecc/app/modules/config/controllers/config_controller.dart';
+import 'package:ecc/app/modules/encontrista/controllers/encontrista_controller.dart';
 import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fast_forms/flutter_fast_forms.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
-class EsposaForm extends Container {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final EsposaForm esposa = EsposaForm();
+class EsposaFormView extends GetView<EncontristaController> {
+  EsposaFormView({Key? key}) : super(key: key);
+  final GlobalKey<FormBuilderState> formKey2 = GlobalKey<FormBuilderState>();
   final encontristaModel = Get.put(EncontristaModel());
-
-  EsposaForm({super.key});
+  final ConfigController configController = Get.put(ConfigController());
+  final formKey = GlobalKey<FormState>();
 
   @override
-  Widget widgetCasal(BuildContext context, GlobalKey<FormState> formkey) {
-    final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
-
+  Widget build(BuildContext context) {
+    print('------------------------------------------------');
     return MaterialApp(
       home: Scaffold(
         //body: Text(encontristaController.listaPaginas[0]['nome']!),
-        body: Padding(
-          padding: const EdgeInsets.all(10),
-          child: FormBuilder(
-            key: formKey,
-            child: Column(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: FastForm(
+              formKey: formKey,
               children: [
-                FormBuilderTextField(
+                const Text(
+                  'Dados da esposa',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+                FastTextField(
+                  labelText: 'Informe o seu nome:',
+                  autovalidateMode: AutovalidateMode.always,
                   name: 'nome',
-                  decoration: const InputDecoration(labelText: 'Nome'),
-                  validator: FormBuilderValidators.required(),
+                  validator: FormBuilderValidators.required(
+                      errorText: 'Preciso mesmo do seu nome!!'),
                 ),
-                FormBuilderDateTimePicker(
-                  name: 'nascimento',
-                  decoration: const InputDecoration(labelText: 'Nascimento'),
-                  inputType: InputType.date,
-                  format: DateFormat('dd-MM-yyyy'),
-                  validator: FormBuilderValidators.required(),
-                ),
-                FormBuilderTextField(
+                FastTextField(
+                  labelText: 'Telefone:',
+                  inputFormatters: [configController.phoneMaskFormatter],
                   name: 'telefone',
-                  decoration:
-                      const InputDecoration(labelText: 'Número de telefone'),
-                  validator: FormBuilderValidators.required(),
                 ),
-                FormBuilderTextField(
+                FastTextField(
+                  labelText: 'Informe o seu email:',
+                  autovalidateMode: AutovalidateMode.always,
                   name: 'email',
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  validator: FormBuilderValidators.required(),
+                  validator: FormBuilderValidators.email(
+                      errorText: 'Acho que este email esta inválido'),
                 ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      final formData = formKey.currentState!.value;
-                      print(formData);
-                      // Faça algo com os dados do formulário aqui
-                    }
-                  },
-                  child: const Text('Enviar'),
+                FastTextField(
+                  labelText: 'Data de Nascimento',
+                  inputFormatters: [configController.dateMaskFormatter],
+                  name: 'nascimento',
+                ),
+                const SizedBox(height: 40),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 10,
+                  decoration: BoxDecoration(
+                      border: Border.all(width: 2),
+                      borderRadius: BorderRadius.circular(12.0)),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Pode nos deixar uma foto?'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              // Handle gallery button press
+                              // Add your logic here
+                            },
+                            icon: const Icon(Icons.photo_library),
+                            label: const Text('Galeria'),
+                          ),
+                          const SizedBox(
+                              width: 16), // Add some spacing between buttons
+                          ElevatedButton.icon(
+                            onPressed: () {
+                              // Handle camera button press
+                              // Add your logic here
+                            },
+                            icon: const Icon(Icons.camera_alt),
+                            label: const Text('Foto'),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
         ),
       ),
+      //),
     );
   }
 }
