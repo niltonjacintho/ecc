@@ -6,8 +6,6 @@ import 'package:get/get.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ConfigController extends GetxController {
-  //TODO: Implement ConfigController
-
   final RxDouble _fontSize = 30.0.obs;
   double get fontSize => _fontSize.value;
 
@@ -18,6 +16,11 @@ class ConfigController extends GetxController {
 
   MaskTextInputFormatter get dateMaskFormatter => MaskTextInputFormatter(
       mask: '##/##/####',
+      filter: {"#": RegExp(r'[0-9]')},
+      type: MaskAutoCompletionType.lazy);
+
+  MaskTextInputFormatter get cepMaskFormatter => MaskTextInputFormatter(
+      mask: '#####-###',
       filter: {"#": RegExp(r'[0-9]')},
       type: MaskAutoCompletionType.lazy);
 

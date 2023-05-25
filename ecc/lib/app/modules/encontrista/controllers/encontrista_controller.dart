@@ -8,7 +8,7 @@ class EncontristaController extends GetxController {
     {'nome': 'Marido', 'descricao': 'Dados do Casal'},
     {'nome': 'Casamento', 'descricao': 'Dados do Casal'},
     {'nome': 'Filhos', 'descricao': 'Dados do Casal'},
-    {'nome': 'Encontros', 'descricao': 'Dados do Casal'},
+    {'nome': 'Encontros \nEm Desenvolvimento', 'descricao': 'Dados do Casal'},
     {'nome': 'Endereços', 'descricao': 'Dados do Casal'}
   ];
 }

@@ -1,3 +1,7 @@
+import 'package:ecc/app/modules/encontrista/views/encontrista_casamento_view.dart';
+import 'package:ecc/app/modules/encontrista/views/encontrista_endereco_view.dart';
+import 'package:ecc/app/modules/encontrista/views/encontrista_esposo_view.dart';
+import 'package:ecc/app/modules/encontrista/views/encontrista_filhos_view.dart';
 import 'package:ecc/app/modules/encontrista/views/encontro_esposa_view.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +17,10 @@ class EncontristaView extends GetView<EncontristaController> {
   @override
   Widget build(BuildContext context) {
     EsposaFormView esposaForm = Get.put(EsposaFormView());
+    EsposoFormView esposoForm = Get.put(EsposoFormView());
+    CasamentoFormView casamentoFormView = Get.put(CasamentoFormView());
+    EnderecoFormView enderecoFormView = Get.put(EnderecoFormView());
+    FilhosFormView filhosFormView = Get.put(FilhosFormView());
     PageController pageController = PageController();
     return Scaffold(
       appBar: AppBar(
@@ -30,10 +38,25 @@ class EncontristaView extends GetView<EncontristaController> {
               controller: pageController,
               children: <Widget>[
                 esposaForm,
-                Text(encontristaController.listaPaginas[1]['nome']!),
-                Text(encontristaController.listaPaginas[2]['nome']!),
-                Text(encontristaController.listaPaginas[3]['nome']!),
-                Text(encontristaController.listaPaginas[4]['nome']!),
+                esposoForm,
+                casamentoFormView,
+                enderecoFormView,
+                filhosFormView,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Text(
+                        encontristaController.listaPaginas[4]['nome']!,
+                        style: const TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ],
               onPageChanged: (value) {
                 //pageController.jumpToPage(3);
