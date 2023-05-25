@@ -83,7 +83,6 @@ class HttpImportController extends GetxController {
             tempLinha.substring(5).split(",")[1].replaceAll("'", "");
 
         gravarParoquia(paroquia);
-        print(tempLinha);
       }
       // print(' id = $id e nome = $nome');
     }
@@ -98,17 +97,10 @@ class HttpImportController extends GetxController {
   gravarParoquia(Paroquia paroquia) async {
     try {
       await Firebase.initializeApp();
-      final CollectionReference dadosRef = FirebaseFirestore.instance.collection('paroquias');
+      final CollectionReference dadosRef =
+          FirebaseFirestore.instance.collection('paroquias');
 
-//      dadosRef.doc(paroquia.id.toString()).get().then((value) async {
-          await dadosRef.doc(paroquia.id.toString()).set(paroquia.toJson())
-
-  //    }
-
-          //  await dadosRef.add(noticiasEditController.noticiasModel.value.toJson());
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   const SnackBar(content: Text('Dados salvos com sucesso!')),
-          )
+      await dadosRef.doc(paroquia.id.toString()).set(paroquia.toJson());
     } catch (e) {
       print(e);
       // ScaffoldMessenger.of(context).showSnackBar(
