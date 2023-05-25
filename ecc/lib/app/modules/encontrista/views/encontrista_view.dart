@@ -1,3 +1,4 @@
+import 'package:ecc/app/modules/config/controllers/httpImport_controller.dart';
 import 'package:ecc/app/modules/encontrista/views/encontrista_casamento_view.dart';
 import 'package:ecc/app/modules/encontrista/views/encontrista_endereco_view.dart';
 import 'package:ecc/app/modules/encontrista/views/encontrista_esposo_view.dart';
@@ -16,6 +17,7 @@ class EncontristaView extends GetView<EncontristaController> {
 
   @override
   Widget build(BuildContext context) {
+    HttpImportController httpImportController = Get.put(HttpImportController());
     EsposaFormView esposaForm = Get.put(EsposaFormView());
     EsposoFormView esposoForm = Get.put(EsposoFormView());
     CasamentoFormView casamentoFormView = Get.put(CasamentoFormView());
@@ -69,6 +71,12 @@ class EncontristaView extends GetView<EncontristaController> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                ElevatedButton(
+                  child: const Text('teste'),
+                  onPressed: () {
+                    httpImportController.importarListaParoquias();
+                  },
+                ),
                 ElevatedButton(
                   child: const Text('Voltar'),
                   onPressed: () {
