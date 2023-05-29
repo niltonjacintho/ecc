@@ -26,11 +26,12 @@ class HttpImportController extends GetxController {
     return 'https://www.arqrio.com.br/curia/paroquias.php?pagina=$pagina&p=&v=';
   }
 
-  importarListaParoquias() async {
+  Future<String> importarListaParoquias() async {
     bool prosseguir = true;
     int pagina = 1;
     int posicao = 0;
     int inicio = 0;
+    int total = 0;
     String linha = '';
     while (prosseguir) {
       try {
@@ -43,7 +44,7 @@ class HttpImportController extends GetxController {
               .indexOf('<div class="panel-group" id="accordion">'));
           linha = linha.substring(0, linha.indexOf('</form>'));
 //get Id
-          extrairParoquias(linha);
+          extrairParoquias(linha).then((value) => total += value);
           posicao =
               response.data.toString().indexOf('onclick="recuperaDetalhes(');
           print(pagina);
@@ -53,9 +54,11 @@ class HttpImportController extends GetxController {
         print(e);
       }
     }
+    return 'Foram adicionas $total paróquias';
   }
 
-  void extrairParoquias(String l) async {
+  Future<int> extrairParoquias(String l) async {
+    var totalParoquias = 0;
     List<Paroquia> listParoquia = [];
     while (l.contains('recuperaDetalhes')) {
       Paroquia paroquia = Paroquia();
@@ -83,9 +86,10 @@ class HttpImportController extends GetxController {
             tempLinha.substring(5).split(",")[1].replaceAll("'", "");
 
         gravarParoquia(paroquia);
+        totalParoquias++;
       }
-      // print(' id = $id e nome = $nome');
     }
+    return totalParoquias;
   }
 
   Future<String> getParoquiaDetails(int id) async {

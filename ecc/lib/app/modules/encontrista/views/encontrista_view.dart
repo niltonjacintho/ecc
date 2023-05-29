@@ -72,12 +72,6 @@ class EncontristaView extends GetView<EncontristaController> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 ElevatedButton(
-                  child: const Text('teste'),
-                  onPressed: () {
-                    httpImportController.importarListaParoquias();
-                  },
-                ),
-                ElevatedButton(
                   child: const Text('Voltar'),
                   onPressed: () {
                     pageController.previousPage(

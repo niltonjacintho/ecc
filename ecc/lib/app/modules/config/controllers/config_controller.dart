@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecc/app/modules/noticias/noticias_edit/views/noticias_noticias_edit_view.dart';
 import 'package:ecc/app/modules/noticias/noticias_list/controllers/noticias_noticias_list_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+enum TipoPhoto { galeria, camera }
 
 class ConfigController extends GetxController {
   final RxDouble _fontSize = 30.0.obs;
+
   double get fontSize => _fontSize.value;
 
   MaskTextInputFormatter get phoneMaskFormatter => MaskTextInputFormatter(
@@ -86,5 +92,31 @@ class ConfigController extends GetxController {
     final DocumentSnapshot<Map<String, dynamic>> snapshot =
         await documentRef.get();
     return snapshot;
+  }
+
+  final Rx<File?> _selectedImage = Rx<File?>(null);
+
+  Future<File>? _pickPhoto(TipoPhoto modo) async {
+    final picker = ImagePicker();
+    final XFile? pickedImage;
+    if (modo == TipoPhoto.camera) {
+      pickedImage = await picker.pickImage(source: ImageSource.camera);
+    } else {
+      pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    }
+    if (pickedImage != null) {
+      return File(pickedImage.path);
+    } else {
+      return Future.value(File(''));
+    }
+  }
+
+  void _pickImage() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedImage != null) {
+      _selectedImage.value = File(pickedImage.path);
+    }
   }
 }

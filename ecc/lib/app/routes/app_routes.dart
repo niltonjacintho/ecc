@@ -12,6 +12,9 @@ abstract class Routes {
   static const NOTICIAS_VIEW = _Paths.NOTICIAS + _Paths.NOTICIAS_VIEW;
   static const CONFIG = _Paths.CONFIG;
   static const ENCONTRISTA = _Paths.ENCONTRISTA;
+  static const GRUPOS = _Paths.GRUPOS;
+  static const USUARIOS = _Paths.USUARIOS;
+  static const LOGINUSER = _Paths.LOGINUSER;
 }
 
 abstract class _Paths {
@@ -24,4 +27,7 @@ abstract class _Paths {
   static const NOTICIAS_VIEW = '/view';
   static const CONFIG = '/config';
   static const ENCONTRISTA = '/encontrista';
+  static const GRUPOS = '/grupos';
+  static const USUARIOS = '/usuarios';
+  static const LOGINUSER = '/loginuser';
 }

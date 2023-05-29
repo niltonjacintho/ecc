@@ -10,8 +10,9 @@ void main() async {
   await Firebase.initializeApp();
   runApp(
     GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "Application",
-      initialRoute: AppPages.LOGIN,
+      initialRoute: AppPages.LOGINUSER,
       getPages: AppPages.routes,
     ),
   );

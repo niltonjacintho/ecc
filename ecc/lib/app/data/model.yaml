@@ -1,11 +1,21 @@
 usuario:
-  email: ''
   nome: ''
-  paroquia: ''
+  paroquia: 0
   senha:
+  ultimoAcesso: 2000-01-01
+  grupo: 0
+  bloqueado: false;
+  emails:
+   - email:
+
+grupos:
+  id: 0
+  nome: ''
+  isadmin: true
+  iseditor: true
   
 
-  paroquias:
+    paroquias:
     nome: ''
     id: ''
     detalhes:

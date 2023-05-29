@@ -1,4 +1,5 @@
 import 'package:ecc/app/modules/encontrista/views/encontrista_view.dart';
+import 'package:ecc/app/modules/home/controllers/navbar_class.dart';
 import 'package:ecc/app/modules/login/views/login_view.dart';
 import 'package:ecc/app/modules/noticias/noticias_list/views/noticias_noticias_list_view.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const NavBar(),
       floatingActionButton: buildBoomMenu(),
       body: SizedBox.expand(
         child: Container(

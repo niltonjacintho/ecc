@@ -25,7 +25,7 @@ class NoticiasEditView extends GetView<NoticiasEditController> {
 
   // NoticiasEditView({super.key});
   static NoticiasEditController noticiasEditController =
-      Get.put(NoticiasEditController());
+      Get.put(NoticiasEditController()); //
 
   @override
   void initState() {
@@ -70,6 +70,15 @@ class NoticiasEditView extends GetView<NoticiasEditController> {
     }
   }
 
+  void _pickPhoto() async {
+    final picker = ImagePicker();
+    final pickedImage = await picker.pickImage(source: ImageSource.camera);
+
+    if (pickedImage != null) {
+      _selectedImage.value = File(pickedImage.path);
+    }
+  }
+
   void _pickImage() async {
     final picker = ImagePicker();
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
@@ -111,73 +120,91 @@ class NoticiasEditView extends GetView<NoticiasEditController> {
         appBar: AppBar(
           title: const Text('Edição'),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                TextFormField(
-                  controller: _tituloController,
-                  decoration: const InputDecoration(labelText: 'Título'),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Por favor, insira o título';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _subTituloController,
-                  decoration: const InputDecoration(labelText: 'Sub Título'),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Por favor, insira o sub título';
-                    }
-                    return null;
-                  },
-                ),
-                TextField(
-                  maxLines: 4,
-                  controller: _descricaoController,
-                  decoration: const InputDecoration(labelText: 'Descrição'),
-                ),
-                const SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: _pickImage,
-                  child: const Text('Selecionar Foto'),
-                ),
-                Obx(() {
-                  if (_selectedImage.value != null) {
-                    return Column(
-                      children: [
-                        const SizedBox(height: 16.0),
-                        Image.file(
-                          _selectedImage.value!,
-                          height: 150,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: _tituloController,
+                    decoration: const InputDecoration(labelText: 'Título'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, insira o título';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    controller: _subTituloController,
+                    decoration: const InputDecoration(labelText: 'Sub Título'),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, insira o sub título';
+                      }
+                      return null;
+                    },
+                  ),
+                  TextField(
+                    maxLines: 4,
+                    controller: _descricaoController,
+                    decoration: const InputDecoration(labelText: 'Descrição'),
+                  ),
+                  const SizedBox(height: 16.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: _pickImage,
+                          child: const Text('Selecionar Foto'),
                         ),
-                      ],
-                    );
-                  } else {
-                    return const SizedBox();
-                  }
-                }),
-                const SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      _uploadImageToFirebaseStorage().then((value) async => {
-                            noticiasEditController
-                                .noticiasModel.value.urlImagemPrincipal = value,
-                            print('00000000000000000000 $value'),
-                            await _salvarDados(context, value)
-                          });
-                      Get.back();
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: _pickPhoto,
+                          child: const Text('Tirar foto'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Obx(() {
+                    if (_selectedImage.value != null) {
+                      return Column(
+                        children: [
+                          const SizedBox(height: 16.0),
+                          Image.file(
+                            _selectedImage.value!,
+                            height: 250,
+                          ),
+                        ],
+                      );
+                    } else {
+                      return const SizedBox();
                     }
-                  },
-                  child: const Text('Salvar'),
-                ),
-              ],
+                  }),
+                  const SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        _uploadImageToFirebaseStorage().then((value) async => {
+                              noticiasEditController.noticiasModel.value
+                                  .urlImagemPrincipal = value,
+                              print('00000000000000000000 $value'),
+                              await _salvarDados(context, value)
+                            });
+                        Get.back();
+                      }
+                    },
+                    child: const Text('Salvar'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

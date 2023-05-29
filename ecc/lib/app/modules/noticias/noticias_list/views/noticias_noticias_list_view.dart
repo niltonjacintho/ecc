@@ -4,6 +4,7 @@ import 'package:ecc/app/modules/noticias/noticias_edit/views/noticias_noticias_e
 import 'package:ecc/app/modules/noticias/view/controllers/noticias_view_controller.dart';
 import 'package:ecc/app/modules/noticias/view/views/noticias_view_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:get/get.dart';
 
@@ -17,6 +18,8 @@ class NoticiasListView extends GetView<NoticiasListController> {
       Get.put(NoticiasListController());
   NoticiasViewController noticiasViewController =
       Get.put(NoticiasViewController());
+
+  get doNothing => null;
   @override
   Widget build(BuildContext context) {
     //controller.getDados();
@@ -83,43 +86,128 @@ class NoticiasListView extends GetView<NoticiasListController> {
                   // Exiba os dados do documento
                   return Padding(
                     padding: const EdgeInsets.all(10),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 216, 228, 246),
-                        border: Border.all(
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: ListTile(
-                        title: Column(
-                          children: [
-                            Visibility(
-                              visible: data['urlImagemPrincipal'] != null,
-                              child: Image.network(
-                                data['urlImagemPrincipal'] ?? '',
-                                width: 200,
-                                height: 200,
+                    child: Column(
+                      // decoration: BoxDecoration(
+                      //   color: const Color.fromARGB(255, 216, 228, 246),
+                      //   border: Border.all(
+                      //     width: 1,
+                      //   ),
+                      //   borderRadius: BorderRadius.circular(12),
+                      // ),
+                      children: [
+                        Slidable(
+                          key: const ValueKey(0),
+                          startActionPane: const ActionPane(
+                            motion: ScrollMotion(),
+                            //dismissible: DismissiblePane(onDismissed: () {}),
+                            children: [
+                              SlidableAction(
+                                backgroundColor: Color.fromARGB(255, 2, 43, 3),
+                                foregroundColor: Colors.white,
+                                label: 'Editar',
+                                onPressed: null,
+                                icon: Icons.edit,
+                              )
+                            ],
+                          ),
+                          endActionPane: const ActionPane(
+                            motion: ScrollMotion(),
+                            children: [
+                              SlidableAction(
+                                onPressed: null,
+                                label: 'Apagar',
+                                icon: Icons.delete,
                               ),
+                            ],
+                          ),
+                          child: ListTile(
+                            title: Column(
+                              children: [
+                                Visibility(
+                                  visible: data['urlImagemPrincipal'] != null,
+                                  child: Image.network(
+                                    data['urlImagemPrincipal'] ?? '',
+                                    width: 200,
+                                    height: 200,
+                                  ),
+                                ),
+                                Text(
+                                  data['titulo'] ?? '--',
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
                             ),
-                            Text(
-                              data['titulo'] ?? '--',
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                          ],
+                            subtitle: Text(data['subtitulo'] ?? '--'),
+                            onTap: () async => {
+                              await configController
+                                  .setCurrentId(document.id.toString())
+                                  .then((value) async => {
+                                        await noticiasViewController
+                                            .fetchDocument(),
+                                        Get.to(const NoticiasView())
+                                      }),
+                            },
+                          ),
                         ),
-                        subtitle: Text(data['subtitulo'] ?? '--'),
-                        onTap: () async => {
-                          await configController
-                              .setCurrentId(document.id.toString())
-                              .then((value) async => {
-                                    await noticiasViewController
-                                        .fetchDocument(),
-                                    Get.to(const NoticiasView())
-                                  }),
-                        },
-                      ),
+                        // Slidable(
+                        //   key: const ValueKey(1),
+                        //   startActionPane: const ActionPane(
+                        //     motion: ScrollMotion(),
+                        //     //  dismissible: DismissiblePane(onDismissed: () {}),
+                        //     children: [
+                        //       SlidableAction(
+                        //         backgroundColor: Color.fromARGB(255, 2, 43, 3),
+                        //         foregroundColor: Colors.white,
+                        //         label: 'Editar',
+                        //         onPressed: null,
+                        //         icon: Icons.edit,
+                        //       )
+                        //     ],
+                        //   ),
+                        //   endActionPane: const ActionPane(
+                        //     motion: ScrollMotion(),
+                        //     children: [
+                        //       SlidableAction(
+                        //         onPressed: null,
+                        //         label: 'Apagar',
+                        //         icon: Icons.delete,
+                        //       ),
+                        //     ],
+                        //   ),
+                        //   child: ListTile(
+                        //     title: Column(
+                        //       children: [
+                        //         Visibility(
+                        //           visible: data['urlImagemPrincipal'] != null,
+                        //           child: Image.network(
+                        //             data['urlImagemPrincipal'] ?? '',
+                        //             width: 200,
+                        //             height: 200,
+                        //           ),
+                        //         ),
+                        //         Text(
+                        //           data['titulo'] ?? '--',
+                        //           style: const TextStyle(
+                        //               fontSize: 18,
+                        //               fontWeight: FontWeight.bold),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //     subtitle: Text(data['subtitulo'] ?? '--'),
+                        //     onTap: () async => {
+                        //       await configController
+                        //           .setCurrentId(document.id.toString())
+                        //           .then((value) async => {
+                        //                 await noticiasViewController
+                        //                     .fetchDocument(),
+                        //                 Get.to(const NoticiasView())
+                        //               }),
+                        //     },
+                        //   ),
+                        // ),
+                      ],
                     ),
                   );
                 }).toList(),

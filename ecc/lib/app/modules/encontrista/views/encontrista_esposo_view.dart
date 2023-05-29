@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/encontrista/controllers/encontrista_controller.dart';
 import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_fast_forms/flutter_fast_forms.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EsposoFormView extends GetView<EncontristaController> {
   EsposoFormView({Key? key}) : super(key: key);
@@ -14,8 +17,28 @@ class EsposoFormView extends GetView<EncontristaController> {
   final ConfigController configController = Get.put(ConfigController());
   final formKey = GlobalKey<FormState>();
 
+  final Rx<File?> _selectedImage = Rx<File?>(null);
+
   @override
   Widget build(BuildContext context) {
+    void _pickPhoto() async {
+      final picker = ImagePicker();
+      final pickedImage = await picker.pickImage(source: ImageSource.camera);
+
+      if (pickedImage != null) {
+        _selectedImage.value = File(pickedImage.path);
+      }
+    }
+
+    void _pickImage() async {
+      final picker = ImagePicker();
+      final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+
+      if (pickedImage != null) {
+        _selectedImage.value = File(pickedImage.path);
+      }
+    }
+
     return MaterialApp(
       home: Scaffold(
         body: SingleChildScrollView(
@@ -55,43 +78,66 @@ class EsposoFormView extends GetView<EncontristaController> {
                   name: 'nascimento',
                 ),
                 const SizedBox(height: 40),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 10,
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 2),
-                      borderRadius: BorderRadius.circular(12.0)),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Pode nos deixar uma foto?'),
-                      Row(
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Pode nos deixar uma foto?',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              // Handle gallery button press
-                              // Add your logic here
-                            },
-                            icon: const Icon(Icons.photo_library),
-                            label: const Text('Galeria'),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                _pickImage();
+                              },
+                              icon: const Icon(Icons.photo_library),
+                              label: const Text('Galeria'),
+                            ),
                           ),
                           const SizedBox(
-                              width: 16), // Add some spacing between buttons
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              // Handle camera button press
-                              // Add your logic here
-                            },
-                            icon: const Icon(Icons.camera_alt),
-                            label: const Text('Foto'),
+                            width: 20,
+                          ),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () {
+                                _pickPhoto();
+                              },
+                              icon: const Icon(Icons.camera_alt),
+                              label: const Text('Foto'),
+                            ),
                           ),
                         ],
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                    Obx(
+                      () {
+                        if (_selectedImage.value != null) {
+                          return Column(
+                            children: [
+                              const SizedBox(height: 16.0),
+                              Image.file(
+                                _selectedImage.value!,
+                                height: 200,
+                              ),
+                            ],
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
+                    ),
+
+                    //)
+                  ],
                 ),
+                // ),
               ],
             ),
           ),
