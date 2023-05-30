@@ -14,6 +14,8 @@ class UsuariosView extends GetView<UsuariosController> {
   Widget build(BuildContext context) {
     final ConfigController configController = Get.put(ConfigController());
     UsuariosController usuariosController = Get.put(UsuariosController());
+    String usuario = '';
+    String senha = '';
     final formKey = GlobalKey<FormState>();
     return Scaffold(
       body: SafeArea(
@@ -34,12 +36,14 @@ class UsuariosView extends GetView<UsuariosController> {
                   name: 'nome',
                   validator: FormBuilderValidators.required(
                       errorText: 'Preciso mesmo do seu nome!!'),
+                  onSaved: (newValue) => usuario = newValue!,
                 ),
                 const SizedBox(height: 20),
-                const FastTextField(
+                FastTextField(
                   obscureText: true,
                   labelText: 'Escolha uma senha:',
                   name: 'senha',
+                  onSaved: (newValue) => senha = newValue!,
                 ),
                 const SizedBox(
                   height: 20,
@@ -62,7 +66,10 @@ class UsuariosView extends GetView<UsuariosController> {
                       child: ElevatedButton(
                         child: const Text('Cadastrar'),
                         onPressed: () {
-                          print(formKey.currentState);
+                          var a = formKey.currentState;
+                          formKey.currentState!.save();
+                          usuariosController.addUser(usuario, senha);
+                          print('form state $a ');
                         },
                       ),
                     ),
