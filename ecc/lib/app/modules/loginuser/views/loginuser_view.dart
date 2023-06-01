@@ -1,5 +1,4 @@
 import 'package:ecc/app/modules/home/views/home_view.dart';
-import 'package:ecc/app/modules/noticias/noticias_list/views/noticias_noticias_list_view.dart';
 import 'package:ecc/app/modules/usuarios/controllers/usuarios_controller.dart';
 import 'package:ecc/app/modules/usuarios/views/usuarios_view.dart';
 import 'package:flutter/material.dart';

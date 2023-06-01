@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fast_forms/flutter_fast_forms.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class CasamentoFormView extends GetView<EncontristaController> {
   CasamentoFormView({Key? key}) : super(key: key);
@@ -11,6 +12,9 @@ class CasamentoFormView extends GetView<EncontristaController> {
 
   final ConfigController configController = Get.put(ConfigController());
   final formKey = GlobalKey<FormState>();
+
+  final EncontristaController encontristaController =
+      Get.put(EncontristaController());
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,17 @@ class CasamentoFormView extends GetView<EncontristaController> {
             padding: const EdgeInsets.all(10),
             child: FastForm(
               formKey: formKey,
+              onChanged: (values) {
+                encontristaController.encontristaModel!.casamento.igreja =
+                    values['igreja'];
+                try {
+                  encontristaController.encontristaModel!.casamento.data =
+                      DateFormat('dd/MM/yyyy').parse(values['data']);
+                } catch (e) {
+                  encontristaController.encontristaModel!.casamento.data =
+                      DateTime(1900);
+                }
+              },
               children: [
                 const Text(
                   'Dados do seu casamento',

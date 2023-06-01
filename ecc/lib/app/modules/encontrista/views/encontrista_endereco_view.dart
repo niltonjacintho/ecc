@@ -24,16 +24,20 @@ class EnderecoFormView extends GetView<EncontristaController> {
             child: FastForm(
               formKey: formKey,
               onChanged: (values) {
-                encontristaController.encontristaModel!.endereco.logradouro =
-                    values['logradouro'];
-                encontristaController.encontristaModel!.endereco.bairro =
-                    values['bairro'];
-                encontristaController.encontristaModel!.endereco.cidade =
-                    values['cidade'];
-                encontristaController.encontristaModel!.endereco.estado =
-                    values['estado'];
-                encontristaController.encontristaModel!.endereco.complemento =
-                    values['complemento'];
+                try {
+                  encontristaController.encontristaModel!.endereco.logradouro =
+                      values['logradouro'];
+                  encontristaController.encontristaModel!.endereco.bairro =
+                      values['bairro'];
+                  encontristaController.encontristaModel!.endereco.cidade =
+                      values['cidade'];
+                  encontristaController.encontristaModel!.endereco.estado =
+                      values['uf'];
+                  encontristaController.encontristaModel!.endereco.complemento =
+                      values['complemento'];
+                } on Exception {
+                  // TODO
+                }
               },
               children: [
                 const Text(
