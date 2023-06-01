@@ -1,94 +1,54 @@
 class EncontristaModel {
-  Encontrista? encontrista;
-
-  EncontristaModel({this.encontrista});
+  EncontristaModel({
+    required this.marido,
+    required this.esposa,
+    required this.endereco,
+    required this.casamento,
+    required this.filhos,
+    required this.encontro,
+  });
+  late final Marido marido;
+  late final Esposa esposa;
+  late final Endereco endereco;
+  late final Casamento casamento;
+  late final List<Filhos> filhos;
+  late final List<Encontro> encontro;
 
   EncontristaModel.fromJson(Map<String, dynamic> json) {
-    encontrista = json['encontrista'] != null
-        ? Encontrista.fromJson(json['encontrista'])
-        : null;
+    marido = Marido.fromJson(json['marido']);
+    esposa = Esposa.fromJson(json['esposa']);
+    endereco = Endereco.fromJson(json['endereco']);
+    casamento = Casamento.fromJson(json['casamento']);
+    filhos = List.from(json['filhos']).map((e) => Filhos.fromJson(e)).toList();
+    encontro =
+        List.from(json['encontro']).map((e) => Encontro.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (encontrista != null) {
-      data['encontrista'] = encontrista?.toJson();
-    }
-    return data;
-  }
-}
-
-class Encontrista {
-  Marido? marido;
-  Marido? esposa;
-  Endereco? endereco;
-  Casamento? casamento;
-  List<Filhos>? filhos;
-  List<Encontro>? encontro;
-
-  Encontrista(
-      {this.marido,
-      this.esposa,
-      this.endereco,
-      this.casamento,
-      this.filhos,
-      this.encontro});
-
-  Encontrista.fromJson(Map<String, dynamic> json) {
-    marido = json['marido'] != null ? Marido.fromJson(json['marido']) : null;
-    esposa = json['esposa'] != null ? Marido.fromJson(json['esposa']) : null;
-    endereco =
-        json['endereco'] != null ? Endereco.fromJson(json['endereco']) : null;
-    casamento = json['casamento'] != null
-        ? Casamento.fromJson(json['casamento'])
-        : null;
-    if (json['filhos'] != null) {
-      filhos = [];
-      // List<Filhos>();
-      json['filhos'].forEach((v) {
-        filhos!.add(Filhos.fromJson(v));
-      });
-    }
-    if (json['encontro'] != null) {
-      encontro = [];
-      json['encontro'].forEach((v) {
-        encontro!.add(Encontro.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (marido != null) {
-      data['marido'] = marido!.toJson();
-    }
-    if (esposa != null) {
-      data['esposa'] = esposa!.toJson();
-    }
-    if (endereco != null) {
-      data['endereco'] = endereco!.toJson();
-    }
-    if (casamento != null) {
-      data['casamento'] = casamento!.toJson();
-    }
-    if (filhos != null) {
-      data['filhos'] = filhos!.map((v) => v.toJson()).toList();
-    }
-    if (encontro != null) {
-      data['encontro'] = encontro!.map((v) => v.toJson()).toList();
-    }
+    final data = <String, dynamic>{};
+    data['marido'] = marido.toJson();
+    data['esposa'] = esposa.toJson();
+    data['endereco'] = endereco.toJson();
+    data['casamento'] = casamento.toJson();
+    data['filhos'] = filhos.map((e) => e.toJson()).toList();
+    data['encontro'] = encontro.map((e) => e.toJson()).toList();
     return data;
   }
 }
 
 class Marido {
-  String? nome;
-  String? photo;
-  String? nascimento;
-  String? telefone;
-  String? email;
-
-  Marido({this.nome, this.photo, this.nascimento, this.telefone, this.email});
+  Marido({
+    required this.nome,
+    required this.photo,
+    required this.nascimento,
+    required this.telefone,
+    required this.email,
+  });
+  late final String nome;
+  late final String photo;
+  late final DateTime nascimento;
+  late final String telefone;
+  late final String email;
 
   Marido.fromJson(Map<String, dynamic> json) {
     nome = json['nome'];
@@ -99,7 +59,45 @@ class Marido {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final data = <String, dynamic>{};
+    data['nome'] = nome;
+    data['photo'] = photo;
+    data['nascimento'] = nascimento;
+    data['telefone'] = telefone;
+    data['email'] = email;
+    return data;
+  }
+}
+
+class Esposa {
+  String? nome = '';
+  String photo = '';
+  DateTime nascimento = DateTime(2000);
+  String telefone = '';
+  String email = '';
+  Esposa({
+    required this.nome,
+    required this.photo,
+    required this.nascimento,
+    required this.telefone,
+    required this.email,
+  });
+  // late final String? nome;
+  // late final String photo;
+  // late final DateTime nascimento;
+  // late final String telefone;
+  // late final String email;
+
+  Esposa.fromJson(Map<String, dynamic> json) {
+    nome = json['nome'];
+    photo = json['photo'];
+    nascimento = json['nascimento'];
+    telefone = json['telefone'];
+    email = json['email'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final data = <String, dynamic>{};
     data['nome'] = nome;
     data['photo'] = photo;
     data['nascimento'] = nascimento;
@@ -110,20 +108,20 @@ class Marido {
 }
 
 class Endereco {
-  String? logradouro;
-  String? bairro;
-  String? cidade;
-  String? estado;
-  int? cep;
-  String? complemento;
-
-  Endereco(
-      {this.logradouro,
-      this.bairro,
-      this.cidade,
-      this.estado,
-      this.cep,
-      this.complemento});
+  Endereco({
+    required this.logradouro,
+    required this.bairro,
+    required this.cidade,
+    required this.estado,
+    required this.cep,
+    required this.complemento,
+  });
+  late final String logradouro;
+  late final String bairro;
+  late final String cidade;
+  late final String estado;
+  late final int cep;
+  late final String complemento;
 
   Endereco.fromJson(Map<String, dynamic> json) {
     logradouro = json['logradouro'];
@@ -135,7 +133,7 @@ class Endereco {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final data = <String, dynamic>{};
     data['logradouro'] = logradouro;
     data['bairro'] = bairro;
     data['cidade'] = cidade;
@@ -147,10 +145,12 @@ class Endereco {
 }
 
 class Casamento {
-  String? data;
-  String? igreja;
-
-  Casamento({this.data, this.igreja});
+  Casamento({
+    required this.data,
+    required this.igreja,
+  });
+  late final DateTime data;
+  late final String igreja;
 
   Casamento.fromJson(Map<String, dynamic> json) {
     data = json['data'];
@@ -158,19 +158,22 @@ class Casamento {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['data'] = this.data;
+    final data = <String, dynamic>{};
+    data['data'] = data;
     data['igreja'] = igreja;
     return data;
   }
 }
 
 class Filhos {
-  String? nome;
-  String? dataNascimento;
-  String? sexo;
-
-  Filhos({this.nome, this.dataNascimento, this.sexo});
+  Filhos({
+    required this.nome,
+    required this.dataNascimento,
+    required this.sexo,
+  });
+  late final String nome;
+  late final DateTime dataNascimento;
+  late final String sexo;
 
   Filhos.fromJson(Map<String, dynamic> json) {
     nome = json['nome'];
@@ -179,7 +182,7 @@ class Filhos {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final data = <String, dynamic>{};
     data['nome'] = nome;
     data['data_nascimento'] = dataNascimento;
     data['sexo'] = sexo;
@@ -188,12 +191,16 @@ class Filhos {
 }
 
 class Encontro {
-  String? equipe;
-  int? ano = 0;
-  bool? coordenador;
-  String? observacao;
-
-  Encontro({this.equipe, this.ano, this.coordenador, this.observacao});
+  Encontro({
+    required this.equipe,
+    required this.ano,
+    required this.coordenador,
+    required this.observacao,
+  });
+  late final String equipe;
+  late final int ano;
+  late final bool coordenador;
+  late final String observacao;
 
   Encontro.fromJson(Map<String, dynamic> json) {
     equipe = json['equipe'];
@@ -203,7 +210,7 @@ class Encontro {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final data = <String, dynamic>{};
     data['equipe'] = equipe;
     data['ano'] = ano;
     data['coordenador'] = coordenador;

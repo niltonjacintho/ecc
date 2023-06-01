@@ -1,6 +1,5 @@
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/encontrista/controllers/encontrista_controller.dart';
-import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_forms/flutter_fast_forms.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -9,7 +8,6 @@ import 'package:get/get.dart';
 class FilhosFormView extends GetView<EncontristaController> {
   FilhosFormView({Key? key}) : super(key: key);
   final GlobalKey<FormBuilderState> formKey2 = GlobalKey<FormBuilderState>();
-  final encontristaModel = Get.put(EncontristaModel());
   final ConfigController configController = Get.put(ConfigController());
   final formKey = GlobalKey<FormState>();
 

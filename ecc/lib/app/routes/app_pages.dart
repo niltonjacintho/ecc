@@ -8,6 +8,8 @@ import '../modules/grupos/bindings/grupos_binding.dart';
 import '../modules/grupos/views/grupos_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/lixo/bindings/lixo_binding.dart';
+import '../modules/lixo/views/lixo_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/loginuser/bindings/loginuser_binding.dart';
@@ -81,6 +83,11 @@ class AppPages {
       name: _Paths.LOGINUSER,
       page: () => LoginuserView(),
       binding: LoginuserBinding(),
+    ),
+    GetPage(
+      name: _Paths.LIXO,
+      page: () => const LixoView(),
+      binding: LixoBinding(),
     ),
   ];
 }

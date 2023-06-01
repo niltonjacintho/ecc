@@ -2,22 +2,22 @@ import 'dart:io';
 
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/encontrista/controllers/encontrista_controller.dart';
-import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_forms/flutter_fast_forms.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class EsposaFormView extends GetView<EncontristaController> {
   EsposaFormView({Key? key}) : super(key: key);
   //final GlobalKey<FormBuilderState> formKey2 = GlobalKey<FormBuilderState>();
-  final encontristaModel = Get.put(EncontristaModel());
   final ConfigController configController = Get.put(ConfigController());
-  EncontristaController encontristaController =
+  final EncontristaController encontristaController =
       Get.put(EncontristaController());
 
   final Rx<File?> _selectedImage = Rx<File?>(null);
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,22 @@ class EsposaFormView extends GetView<EncontristaController> {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: FastForm(
-              formKey: encontristaController.formKey,
+              formKey: formKey,
+              onChanged: (values) {
+                encontristaController.encontristaModel!.esposa.nome =
+                    values['nome'];
+                encontristaController.encontristaModel!.esposa.telefone =
+                    values['telefone'];
+                encontristaController.encontristaModel!.esposa.email =
+                    values['email'];
+                try {
+                  encontristaController.encontristaModel!.esposa.nascimento =
+                      DateFormat('dd/MM/yyyy').parse(values['nascimento']);
+                } catch (e) {
+                  encontristaController.encontristaModel!.esposa.nascimento =
+                      DateTime(1900);
+                }
+              },
               children: [
                 const Text(
                   'Dados da esposa',

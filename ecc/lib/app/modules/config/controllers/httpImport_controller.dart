@@ -29,8 +29,8 @@ class HttpImportController extends GetxController {
   Future<String> importarListaParoquias() async {
     bool prosseguir = true;
     int pagina = 1;
-    int posicao = 0;
-    int inicio = 0;
+    // int posicao = 0;
+    // int inicio = 0;
     int total = 0;
     String linha = '';
     while (prosseguir) {
@@ -44,8 +44,8 @@ class HttpImportController extends GetxController {
               .indexOf('<div class="panel-group" id="accordion">'));
           linha = linha.substring(0, linha.indexOf('</form>'));
           extrairParoquias(linha).then((value) => total += value);
-          posicao =
-              response.data.toString().indexOf('onclick="recuperaDetalhes(');
+          // posicao =
+          //     response.data.toString().indexOf('onclick="recuperaDetalhes(');
         }
         pagina++;
       } catch (e) {
@@ -57,7 +57,7 @@ class HttpImportController extends GetxController {
 
   Future<int> extrairParoquias(String l) async {
     var totalParoquias = 0;
-    List<Paroquia> listParoquia = [];
+    //List<Paroquia> listParoquia = [];
     while (l.contains('recuperaDetalhes')) {
       Paroquia paroquia = Paroquia();
       l = l.substring(l.indexOf('recuperaDetalhes'));

@@ -34,39 +34,37 @@ noticias:
         endereco: ''
 
 encontrista:
- marido:
-  nome: ''
-  photo: ''
-  nascimento: 2021-01-01
-  telefone:
-    - numero: ''
-      principal: true
-  email: ''
-esposa:
-  nome: ''
-  photo: ''
-  nascimento: 2021-01-01
-  telefone: ''
-  email: ''
-endereco:
-  logradouro: ''
-  bairro: ''
-  cidade: ''
-  estado: ''
-  cep: 0
-  complemento: ''
-casamento:
-  data: 2021-01-01
-  igreja: ''
-filhos:
-  - nome: ''
-    data_nascimento: 2021-01-01
-    sexo: ''
-encontro:
-  - equipe: ''
-    ano: 9999
-    coordenador: true
-    observacao: ''
+  marido:
+     nome: ''
+     photo: ''
+     nascimento: 2021-01-01
+     telefone: ''
+     email: ''
+  esposa:
+     nome: ''
+     photo: ''
+     nascimento: 2021-01-01
+     telefone: ''
+     email: ''
+  endereco:
+     logradouro: ''
+     bairro: ''
+     cidade: ''
+     estado: ''
+     cep: 0
+     complemento: ''
+  casamento:
+     data: 2021-01-01
+     igreja: ''
+  filhos:
+     - nome: ''
+       data_nascimento: 2021-01-01
+       sexo: ''
+  encontro:
+     - equipe: ''
+       ano: 9999
+       coordenador: true
+       observacao: ''
 
 
 formularios:
