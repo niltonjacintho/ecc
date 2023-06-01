@@ -37,6 +37,11 @@ class EncontristaModel {
 }
 
 class Marido {
+  String nome = '';
+  String photo = '';
+  DateTime nascimento = DateTime(1900);
+  String telefone = '';
+  String email = '';
   Marido({
     required this.nome,
     required this.photo,
@@ -44,11 +49,6 @@ class Marido {
     required this.telefone,
     required this.email,
   });
-  late final String nome;
-  late final String photo;
-  late final DateTime nascimento;
-  late final String telefone;
-  late final String email;
 
   Marido.fromJson(Map<String, dynamic> json) {
     nome = json['nome'];
@@ -108,6 +108,12 @@ class Esposa {
 }
 
 class Endereco {
+  String logradouro = '';
+  String bairro = '';
+  String cidade = '';
+  String estado = '';
+  int cep = 0;
+  String complemento = '';
   Endereco({
     required this.logradouro,
     required this.bairro,
@@ -116,12 +122,6 @@ class Endereco {
     required this.cep,
     required this.complemento,
   });
-  late final String logradouro;
-  late final String bairro;
-  late final String cidade;
-  late final String estado;
-  late final int cep;
-  late final String complemento;
 
   Endereco.fromJson(Map<String, dynamic> json) {
     logradouro = json['logradouro'];
@@ -145,12 +145,12 @@ class Endereco {
 }
 
 class Casamento {
+  DateTime data = DateTime(1900);
+  String igreja = '';
   Casamento({
     required this.data,
     required this.igreja,
   });
-  late final DateTime data;
-  late final String igreja;
 
   Casamento.fromJson(Map<String, dynamic> json) {
     data = json['data'];
@@ -166,14 +166,14 @@ class Casamento {
 }
 
 class Filhos {
+  String nome = '';
+  DateTime dataNascimento = DateTime(1900);
+  String sexo = '';
   Filhos({
     required this.nome,
     required this.dataNascimento,
     required this.sexo,
   });
-  late final String nome;
-  late final DateTime dataNascimento;
-  late final String sexo;
 
   Filhos.fromJson(Map<String, dynamic> json) {
     nome = json['nome'];
@@ -191,16 +191,16 @@ class Filhos {
 }
 
 class Encontro {
+  String equipe = '';
+  int ano = 0;
+  bool coordenador = false;
+  String observacao = '';
   Encontro({
     required this.equipe,
     required this.ano,
     required this.coordenador,
     required this.observacao,
   });
-  late final String equipe;
-  late final int ano;
-  late final bool coordenador;
-  late final String observacao;
 
   Encontro.fromJson(Map<String, dynamic> json) {
     equipe = json['equipe'];

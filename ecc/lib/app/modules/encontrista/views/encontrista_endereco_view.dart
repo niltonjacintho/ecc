@@ -5,6 +5,9 @@ import 'package:flutter_fast_forms/flutter_fast_forms.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
 
+final EncontristaController encontristaController =
+    Get.put(EncontristaController());
+
 class EnderecoFormView extends GetView<EncontristaController> {
   EnderecoFormView({Key? key}) : super(key: key);
   final GlobalKey<FormBuilderState> formKey2 = GlobalKey<FormBuilderState>();
@@ -20,6 +23,18 @@ class EnderecoFormView extends GetView<EncontristaController> {
             padding: const EdgeInsets.all(10),
             child: FastForm(
               formKey: formKey,
+              onChanged: (values) {
+                encontristaController.encontristaModel!.endereco.logradouro =
+                    values['logradouro'];
+                encontristaController.encontristaModel!.endereco.bairro =
+                    values['bairro'];
+                encontristaController.encontristaModel!.endereco.cidade =
+                    values['cidade'];
+                encontristaController.encontristaModel!.endereco.estado =
+                    values['estado'];
+                encontristaController.encontristaModel!.endereco.complemento =
+                    values['complemento'];
+              },
               children: [
                 const Text(
                   'Aonde vocês moram?',

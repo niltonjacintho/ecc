@@ -8,12 +8,15 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class EsposoFormView extends GetView<EncontristaController> {
   EsposoFormView({Key? key}) : super(key: key);
   final GlobalKey<FormBuilderState> formKey2 = GlobalKey<FormBuilderState>();
   final ConfigController configController = Get.put(ConfigController());
   final formKey = GlobalKey<FormState>();
+  final EncontristaController encontristaController =
+      Get.put(EncontristaController());
 
   final Rx<File?> _selectedImage = Rx<File?>(null);
 
@@ -44,6 +47,21 @@ class EsposoFormView extends GetView<EncontristaController> {
             padding: const EdgeInsets.all(10),
             child: FastForm(
               formKey: formKey,
+              onChanged: (values) {
+                encontristaController.encontristaModel!.marido.nome =
+                    values['nome'];
+                encontristaController.encontristaModel!.marido.telefone =
+                    values['telefone'];
+                encontristaController.encontristaModel!.marido.email =
+                    values['email'];
+                try {
+                  encontristaController.encontristaModel!.marido.nascimento =
+                      DateFormat('dd/MM/yyyy').parse(values['nascimento']);
+                } catch (e) {
+                  encontristaController.encontristaModel!.marido.nascimento =
+                      DateTime(1900);
+                }
+              },
               children: [
                 const Text(
                   'Dados do marido',
