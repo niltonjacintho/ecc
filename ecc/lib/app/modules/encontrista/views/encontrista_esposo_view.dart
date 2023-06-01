@@ -57,8 +57,6 @@ class EsposoFormView extends GetView<EncontristaController> {
                   name: 'nome',
                   validator: FormBuilderValidators.required(
                       errorText: 'Preciso mesmo do seu nome!!'),
-                  onEditingComplete: () =>
-                      print('Edit Complete                '),
                 ),
                 FastTextField(
                   labelText: 'Telefone:',

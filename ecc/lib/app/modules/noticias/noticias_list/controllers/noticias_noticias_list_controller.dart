@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 
 class NoticiasListController extends GetxController {
   getDados() {
-    print('entrou');
     FirebaseFirestore.instance
         .collection('ecc') // Substitua pelo nome da sua coleção
         .snapshots() // Obtenha um stream de snapshots
@@ -16,8 +15,6 @@ class NoticiasListController extends GetxController {
         // Faça algo com os dados
         String nome = data['descricao'];
         String idade = data['titulo'];
-
-        print('Nome: $nome, Idade: $idade');
       }
     });
   }

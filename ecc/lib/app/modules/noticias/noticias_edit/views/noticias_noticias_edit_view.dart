@@ -103,7 +103,6 @@ class NoticiasEditView extends GetView<NoticiasEditController> {
       final firebase_storage.TaskSnapshot taskSnapshot = await uploadTask;
 
       await taskSnapshot.ref.getDownloadURL().then((value) => {
-            print('============================$value'),
             retorno = value,
           });
       return retorno;
@@ -195,7 +194,6 @@ class NoticiasEditView extends GetView<NoticiasEditController> {
                         _uploadImageToFirebaseStorage().then((value) async => {
                               noticiasEditController.noticiasModel.value
                                   .urlImagemPrincipal = value,
-                              print('00000000000000000000 $value'),
                               await _salvarDados(context, value)
                             });
                         Get.back();

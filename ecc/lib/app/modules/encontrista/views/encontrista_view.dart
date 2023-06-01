@@ -62,7 +62,6 @@ class EncontristaView extends GetView<EncontristaController> {
               ],
               onPageChanged: (value) {
                 //pageController.jumpToPage(3);
-                print("Número da página atual : $value");
               },
             ),
           ),

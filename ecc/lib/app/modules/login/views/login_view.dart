@@ -53,7 +53,6 @@ class LoginPage extends StatelessWidget {
         onPressed: () {
           _signInWithGoogle().then((UserCredential? userCredential) {
             if (userCredential != null) {
-              print(userCredential.user);
               Get.off(const HomeView());
               // User signed in successfully, navigate to the next screen
             } else {

@@ -20,13 +20,11 @@ class NoticiasView extends GetView<NoticiasViewController> {
       noticiasViewController.fetchDocument();
     });
     void _onItemTapped(int index) {
-      print(index);
       if (index == 0) {
         configController.fontSize++;
       } else {
         configController.fontSize--;
       }
-      print(configController.fontSize);
     }
 
     int selectedIndex = 0;

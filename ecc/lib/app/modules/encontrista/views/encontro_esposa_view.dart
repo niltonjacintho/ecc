@@ -5,17 +5,18 @@ import 'package:ecc/app/modules/encontrista/controllers/encontrista_controller.d
 import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_forms/flutter_fast_forms.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EsposaFormView extends GetView<EncontristaController> {
   EsposaFormView({Key? key}) : super(key: key);
-  final GlobalKey<FormBuilderState> formKey2 = GlobalKey<FormBuilderState>();
+  //final GlobalKey<FormBuilderState> formKey2 = GlobalKey<FormBuilderState>();
   final encontristaModel = Get.put(EncontristaModel());
   final ConfigController configController = Get.put(ConfigController());
-  final formKey = GlobalKey<FormState>();
+  EncontristaController encontristaController =
+      Get.put(EncontristaController());
+
   final Rx<File?> _selectedImage = Rx<File?>(null);
 
   @override
@@ -44,7 +45,7 @@ class EsposaFormView extends GetView<EncontristaController> {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: FastForm(
-              formKey: formKey,
+              formKey: encontristaController.formKey,
               children: [
                 const Text(
                   'Dados da esposa',

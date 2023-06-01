@@ -43,11 +43,9 @@ class HttpImportController extends GetxController {
               .toString()
               .indexOf('<div class="panel-group" id="accordion">'));
           linha = linha.substring(0, linha.indexOf('</form>'));
-//get Id
           extrairParoquias(linha).then((value) => total += value);
           posicao =
               response.data.toString().indexOf('onclick="recuperaDetalhes(');
-          print(pagina);
         }
         pagina++;
       } catch (e) {

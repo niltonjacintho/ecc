@@ -1,3 +1,4 @@
+import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_forms/flutter_fast_forms.dart';
@@ -68,8 +69,16 @@ class UsuariosView extends GetView<UsuariosController> {
                         onPressed: () {
                           var a = formKey.currentState;
                           formKey.currentState!.save();
-                          usuariosController.addUser(usuario, senha);
-                          print('form state $a ');
+                          usuariosController
+                              .addUser(usuario, senha)
+                              .then((value) {
+                            if (!value) {
+                              configController.showDialog(context,
+                                  texto:
+                                      'Não foi possivel realizar o cadastro. Provavelmente este nome de usuário já existe!! Tente outro nome!',
+                                  tipo: ArtSweetAlertType.danger);
+                            }
+                          });
                         },
                       ),
                     ),

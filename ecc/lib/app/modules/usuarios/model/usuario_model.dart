@@ -9,7 +9,7 @@ class UsuariosModel {
   });
   late final String nome;
   late final int paroquia;
-  late String senha;
+  late String senha = '';
   late final DateTime ultimoAcesso;
   late final int grupo;
   late final bool bloqueado;

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecc/app/modules/noticias/noticias_edit/views/noticias_noticias_edit_view.dart';
 import 'package:ecc/app/modules/noticias/noticias_list/controllers/noticias_noticias_list_controller.dart';
@@ -86,7 +87,6 @@ class ConfigController extends GetxController {
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getDocumentById(
       String collection, String documentId) async {
-    print('$collection  and $documentId  and $noticiaCurrentId ');
     final DocumentReference<Map<String, dynamic>> documentRef =
         FirebaseFirestore.instance.collection(collection).doc(documentId);
     final DocumentSnapshot<Map<String, dynamic>> snapshot =
@@ -118,5 +118,15 @@ class ConfigController extends GetxController {
     if (pickedImage != null) {
       _selectedImage.value = File(pickedImage.path);
     }
+  }
+
+  void showDialog(BuildContext context,
+      {String texto = '',
+      String titulo = 'Atenção',
+      ArtSweetAlertType tipo = ArtSweetAlertType.info}) {
+    ArtSweetAlert.show(
+      context: context,
+      artDialogArgs: ArtDialogArgs(type: tipo, title: titulo, text: texto),
+    );
   }
 }
