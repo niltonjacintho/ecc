@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
 import 'package:get/get.dart';
 
 class EncontristaController extends GetxController {
   EncontristaModel? encontristaModel;
+  ConfigController configController = Get.put(ConfigController());
 
   final listaPaginas = [
     {'nome': 'Esposa', 'descricao': 'Dados do Casal'},
@@ -12,6 +15,20 @@ class EncontristaController extends GetxController {
     {'nome': 'Encontros \nEm Desenvolvimento', 'descricao': 'Dados do Casal'},
     {'nome': 'Endereços', 'descricao': 'Dados do Casal'}
   ];
+
+  final CollectionReference _encontristaCollection =
+      FirebaseFirestore.instance.collection('encontrista');
+
+  Future<bool> gravar() async {
+    try {
+      await _encontristaCollection
+          .doc(configController.usuariosModel!.nome)
+          .set(encontristaModel!.toJson());
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 
   @override
   void onInit() {
@@ -37,7 +54,10 @@ class EncontristaController extends GetxController {
             cep: 0,
             complemento: ''),
         filhos: [
-          Filhos(nome: '', dataNascimento: DateTime(1900), sexo: '')
+          Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
+          Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
+          Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
+          Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
         ],
         encontro: [
           Encontro(equipe: '', ano: 0, coordenador: false, observacao: '')

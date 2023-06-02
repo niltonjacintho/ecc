@@ -61,9 +61,7 @@ class EncontristaView extends GetView<EncontristaController> {
                 )
               ],
               onPageChanged: (value) {
-                print('just for pause');
-                print(encontristaController.encontristaModel);
-                //pageController.jumpToPage(3);
+                encontristaController.gravar(); //pageController.jumpToPage(3);
               },
             ),
           ),

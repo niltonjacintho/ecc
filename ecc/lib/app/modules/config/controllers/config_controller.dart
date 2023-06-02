@@ -4,6 +4,7 @@ import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecc/app/modules/noticias/noticias_edit/views/noticias_noticias_edit_view.dart';
 import 'package:ecc/app/modules/noticias/noticias_list/controllers/noticias_noticias_list_controller.dart';
+import 'package:ecc/app/modules/usuarios/model/usuario_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +14,8 @@ enum TipoPhoto { galeria, camera }
 
 class ConfigController extends GetxController {
   final RxDouble _fontSize = 30.0.obs;
+
+  UsuariosModel? usuariosModel;
 
   double get fontSize => _fontSize.value;
 

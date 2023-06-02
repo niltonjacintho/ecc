@@ -4,12 +4,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fast_forms/flutter_fast_forms.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class FilhosFormView extends GetView<EncontristaController> {
   FilhosFormView({Key? key}) : super(key: key);
   final GlobalKey<FormBuilderState> formKey2 = GlobalKey<FormBuilderState>();
   final ConfigController configController = Get.put(ConfigController());
   final formKey = GlobalKey<FormState>();
+  final EncontristaController encontristaController =
+      Get.put(EncontristaController());
+
+  void fillFilhos(
+      String fieldNome, String fieldNomeValue, String fieldNascimentoValue) {
+    var i = double.tryParse(fieldNome.substring(fieldNome.length - 1)) != null
+        ? int.parse(fieldNome.substring(fieldNome.length - 1))
+        : 0;
+    if (i != 0) {
+      i--;
+      encontristaController.encontristaModel!.filhos[i].nome = fieldNomeValue;
+      try {
+        encontristaController.encontristaModel!.filhos[i].dataNascimento =
+            DateFormat('dd/MM/yyyy').parse(fieldNascimentoValue);
+      } catch (e) {
+        encontristaController.encontristaModel!.filhos[i].dataNascimento =
+            DateTime(1900);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +41,12 @@ class FilhosFormView extends GetView<EncontristaController> {
             padding: const EdgeInsets.all(10),
             child: FastForm(
               formKey: formKey,
+              onChanged: (values) {
+                fillFilhos('nome_1', values['nome_1'], values['nascimento_1']);
+                fillFilhos('nome_2', values['nome_2'], values['nascimento_2']);
+                fillFilhos('nome_3', values['nome_3'], values['nascimento_3']);
+                fillFilhos('nome_4', values['nome_4'], values['nascimento_4']);
+              },
               children: [
                 const Text(
                   'Fale sobre seus filhos',

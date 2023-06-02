@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/usuarios/model/usuario_model.dart';
 import 'package:encryptor/encryptor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class UsuariosController extends GetxController {
-  //TODO: Implement UsuariosController
+  final ConfigController configController = Get.put(ConfigController());
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -87,6 +88,7 @@ class UsuariosController extends GetxController {
             grupo: 2,
             bloqueado: snapshot['bloqueado'],
             emails: emails);
+        configController.usuariosModel = usuariosModel;
         usuariosModel.senha = snapshot['senha'];
         await _usuariosCollection
             .doc(usuariosModel.nome.replaceAll(' ', ''))
