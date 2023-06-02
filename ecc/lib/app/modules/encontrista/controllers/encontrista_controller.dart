@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
 class EncontristaController extends GetxController {
@@ -16,29 +17,38 @@ class EncontristaController extends GetxController {
     {'nome': 'Endereços', 'descricao': 'Dados do Casal'}
   ];
 
-  final CollectionReference _encontristaCollection =
-      FirebaseFirestore.instance.collection('encontrista');
-
   Future<bool> gravar() async {
     try {
-      await _encontristaCollection
-          .doc(configController.usuariosModel!.nome)
+      await Firebase.initializeApp();
+      final CollectionReference encontristaCollection =
+          FirebaseFirestore.instance.collection('encontrista');
+      await encontristaCollection
+          .doc('nilton') //configController.usuariosModel!.nome.trim())
           .set(encontristaModel!.toJson());
+      print('gravou  -  ${encontristaModel!.toJson()}');
+      //
+      //
       return true;
     } catch (e) {
+      print(' ========================= mensagem de erro  ${e.toString()} ');
+      print(' ENTROU NO ERRO  ${encontristaModel!.toJson()} ');
+      e.printError();
+      e.printInfo();
       return false;
     }
   }
 
   @override
   void onInit() {
+    print(
+        '============================== INICIALIZANDO ==============================');
     encontristaModel = Get.put(EncontristaModel(
         marido: Marido(
-            nome: '',
-            photo: '',
+            nome: ' ',
+            photo: 'photo',
             nascimento: DateTime(1900),
-            telefone: '',
-            email: ''),
+            telefone: ' ',
+            email: ' '),
         esposa: Esposa(
             nome: '',
             photo: '',

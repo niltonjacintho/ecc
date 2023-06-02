@@ -33,15 +33,17 @@ class EncontristaModel {
     data['filhos'] = filhos.map((e) => e.toJson()).toList();
     data['encontro'] = encontro.map((e) => e.toJson()).toList();
     return data;
+
+    //};
   }
 }
 
 class Marido {
-  String nome = '';
-  String photo = '';
+  String nome = ' ';
+  String photo = 'photo';
   DateTime nascimento = DateTime(1900);
-  String telefone = '';
-  String email = '';
+  String telefone = ' ';
+  String email = ' ';
   Marido({
     required this.nome,
     required this.photo,
@@ -60,11 +62,11 @@ class Marido {
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['nome'] = nome;
-    data['photo'] = photo;
+    data['nome'] = nome == '' ? '.setado' : nome;
+    data['photo'] = photo == '' ? '.' : photo;
     data['nascimento'] = nascimento;
-    data['telefone'] = telefone;
-    data['email'] = email;
+    data['telefone'] = telefone == '' ? '.' : telefone;
+    data['email'] = email == '' ? '.' : email;
     return data;
   }
 }
@@ -145,7 +147,7 @@ class Endereco {
 }
 
 class Casamento {
-  DateTime data = DateTime(1900);
+  DateTime data = DateTime(2000);
   String igreja = '';
   Casamento({
     required this.data,
@@ -158,10 +160,10 @@ class Casamento {
   }
 
   Map<String, dynamic> toJson() {
-    final data = <String, dynamic>{};
-    data['data'] = data;
-    data['igreja'] = igreja;
-    return data;
+    final dataBase = <String, dynamic>{};
+    dataBase['data'] = data;
+    dataBase['igreja'] = igreja;
+    return dataBase;
   }
 }
 

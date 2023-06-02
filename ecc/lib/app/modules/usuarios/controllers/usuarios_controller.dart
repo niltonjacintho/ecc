@@ -56,6 +56,8 @@ class UsuariosController extends GetxController {
 
   Future<bool> userExists(String documentId) async {
     final document = _usuariosCollection.doc(documentId);
+    print(documentId);
+    document.printError();
     final snapshot = await document.get();
     return snapshot.exists;
   }
@@ -77,8 +79,10 @@ class UsuariosController extends GetxController {
         UserCredential? userCredential = await _signInWithGoogle();
         List<Emails> emails = [];
         Map<String, String> map = {};
-        snapshot['emails']
-            .forEach((value) => emails.add(Emails(email: value['email'])));
+        try {
+          snapshot['emails']
+              .forEach((value) => emails.add(Emails(email: value['email'])));
+        } catch (e) {}
 
         emails.add(Emails(email: userCredential!.user!.email.toString()));
         UsuariosModel usuariosModel = UsuariosModel(

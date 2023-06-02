@@ -55,6 +55,8 @@ class NoticiasEditView extends GetView<NoticiasEditController> {
         DateTime.now().toIso8601String();
     noticiasEditController.noticiasModel.value.urlImagemPrincipal = url;
     try {
+      print(
+          'NOTICIAS  =============== ${noticiasEditController.noticiasModel.value.toJson()}');
       await Firebase.initializeApp();
       final CollectionReference dadosRef =
           FirebaseFirestore.instance.collection('noticias');
