@@ -10,7 +10,7 @@ class FilhosFormView extends GetView<EncontristaController> {
   FilhosFormView({Key? key}) : super(key: key);
   final GlobalKey<FormBuilderState> formKey2 = GlobalKey<FormBuilderState>();
   final ConfigController configController = Get.put(ConfigController());
-  final formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>().obs;
   final EncontristaController encontristaController =
       Get.put(EncontristaController());
 
@@ -32,6 +32,13 @@ class FilhosFormView extends GetView<EncontristaController> {
     }
   }
 
+  onInit() async {
+    print("call onInit"); // this line not printing
+    // checkIsLogin();
+    // print("ww");
+    //super. .onInit();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -40,7 +47,7 @@ class FilhosFormView extends GetView<EncontristaController> {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: FastForm(
-              formKey: formKey,
+              formKey: formKey.value,
               onChanged: (values) {
                 fillFilhos('nome_1', values['nome_1'], values['nascimento_1']);
                 fillFilhos('nome_2', values['nome_2'], values['nascimento_2']);

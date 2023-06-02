@@ -4,7 +4,6 @@ import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/encontrista/controllers/encontrista_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_forms/flutter_fast_forms.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -12,9 +11,9 @@ import 'package:intl/intl.dart';
 
 class EsposoFormView extends GetView<EncontristaController> {
   EsposoFormView({Key? key}) : super(key: key);
-  final GlobalKey<FormBuilderState> formKey2 = GlobalKey<FormBuilderState>();
+
   final ConfigController configController = Get.put(ConfigController());
-  final formKey = GlobalKey<FormState>();
+  var formKey = GlobalKey<FormState>().obs;
   final EncontristaController encontristaController =
       Get.put(EncontristaController());
 
@@ -46,7 +45,7 @@ class EsposoFormView extends GetView<EncontristaController> {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: FastForm(
-              formKey: formKey,
+              formKey: formKey.value,
               onChanged: (values) {
                 encontristaController.encontristaModel!.marido.nome =
                     values['nome'];
