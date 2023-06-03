@@ -2,11 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class EncontristaController extends GetxController {
   EncontristaModel? encontristaModel;
   ConfigController configController = Get.put(ConfigController());
+
+  Rx<GlobalKey<FormState>> formKeyEsposo = GlobalKey<FormState>().obs;
 
   final listaPaginas = [
     {'nome': 'Esposa', 'descricao': 'Dados do Casal'},
@@ -42,6 +45,7 @@ class EncontristaController extends GetxController {
   void onInit() {
     print(
         '============================== INICIALIZANDO ==============================');
+    formKeyEsposo = GlobalKey<FormState>().obs;
     encontristaModel = Get.put(EncontristaModel(
         marido: Marido(
             nome: ' ',

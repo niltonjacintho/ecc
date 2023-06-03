@@ -13,7 +13,7 @@ class EsposoFormView extends GetView<EncontristaController> {
   EsposoFormView({Key? key}) : super(key: key);
 
   final ConfigController configController = Get.put(ConfigController());
-  var formKey = GlobalKey<FormState>().obs;
+
   final EncontristaController encontristaController =
       Get.put(EncontristaController());
 
@@ -45,7 +45,7 @@ class EsposoFormView extends GetView<EncontristaController> {
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: FastForm(
-              formKey: formKey.value,
+              formKey: encontristaController.formKeyEsposo.value,
               onChanged: (values) {
                 encontristaController.encontristaModel!.marido.nome =
                     values['nome'];
@@ -68,6 +68,8 @@ class EsposoFormView extends GetView<EncontristaController> {
                 ),
                 FastTextField(
                   labelText: 'Informe o seu nome:',
+                  initialValue:
+                      encontristaController.encontristaModel!.marido.nome,
                   autovalidateMode: AutovalidateMode.always,
                   name: 'nome',
                   validator: FormBuilderValidators.required(
