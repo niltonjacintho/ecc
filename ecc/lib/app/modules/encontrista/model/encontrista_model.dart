@@ -110,12 +110,12 @@ class Esposa {
 }
 
 class Endereco {
-  String logradouro = '';
-  String bairro = '';
-  String cidade = '';
-  String estado = '';
-  int cep = 0;
-  String complemento = '';
+  String? logradouro = '';
+  String? bairro = '';
+  String? cidade = '';
+  String? estado = '';
+  int? cep = 0;
+  String? complemento = '';
   Endereco({
     required this.logradouro,
     required this.bairro,
@@ -148,7 +148,7 @@ class Endereco {
 
 class Casamento {
   DateTime data = DateTime(2000);
-  String igreja = '';
+  String igreja = ' ';
   Casamento({
     required this.data,
     required this.igreja,

@@ -70,6 +70,8 @@ class EsposaFormView extends GetView<EncontristaController> {
                   labelText: 'Informe o seu nome:',
                   autovalidateMode: AutovalidateMode.always,
                   name: 'nome',
+                  initialValue:
+                      encontristaController.encontristaModel!.esposa.nome,
                   validator: FormBuilderValidators.required(
                       errorText: 'Preciso mesmo do seu nome!!'),
                 ),
@@ -77,11 +79,15 @@ class EsposaFormView extends GetView<EncontristaController> {
                   labelText: 'Telefone:',
                   inputFormatters: [configController.phoneMaskFormatter],
                   name: 'telefone',
+                  initialValue:
+                      encontristaController.encontristaModel!.esposa.telefone,
                 ),
                 FastTextField(
                   labelText: 'Informe o seu email:',
                   autovalidateMode: AutovalidateMode.always,
                   name: 'email',
+                  initialValue:
+                      encontristaController.encontristaModel!.esposa.email,
                   validator: FormBuilderValidators.email(
                       errorText: 'Acho que este email esta inválido'),
                 ),
@@ -89,6 +95,12 @@ class EsposaFormView extends GetView<EncontristaController> {
                   labelText: 'Data de Nascimento',
                   inputFormatters: [configController.dateMaskFormatter],
                   name: 'nascimento',
+                  initialValue: encontristaController
+                      .encontristaModel!.marido.nascimento
+                      .toIso8601String()
+                      .split('T')
+                      .first
+                      .replaceAll('-', '/'),
                 ),
                 const SizedBox(height: 40),
                 Column(

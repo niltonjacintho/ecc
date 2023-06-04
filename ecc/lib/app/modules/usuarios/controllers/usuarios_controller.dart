@@ -11,6 +11,8 @@ class UsuariosController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  Rx<UsuariosModel>? usuarioAtivo;
+
   final CollectionReference _usuariosCollection =
       FirebaseFirestore.instance.collection('usuarios');
 
@@ -42,6 +44,7 @@ class UsuariosController extends GetxController {
         bloqueado: true,
         emails: []);
     usuariosModel.senha = encrypted;
+
     bool exists = await userExists(usuario);
 
     if (!exists) {
@@ -83,7 +86,6 @@ class UsuariosController extends GetxController {
           snapshot['emails']
               .forEach((value) => emails.add(Emails(email: value['email'])));
         } catch (e) {}
-
         emails.add(Emails(email: userCredential!.user!.email.toString()));
         UsuariosModel usuariosModel = UsuariosModel(
             nome: snapshot['nome'],
@@ -92,6 +94,7 @@ class UsuariosController extends GetxController {
             grupo: 2,
             bloqueado: snapshot['bloqueado'],
             emails: emails);
+        usuarioAtivo!.value = usuariosModel;
         configController.usuariosModel = usuariosModel;
         usuariosModel.senha = snapshot['senha'];
         await _usuariosCollection
@@ -116,5 +119,19 @@ class UsuariosController extends GetxController {
         await _auth.signInWithCredential(credential);
 
     return userCredential;
+  }
+
+  @override
+  void onInit() {
+    print(
+        '=================== INICIALIZANDO USUARIOS ==============================');
+    usuarioAtivo = usuarioAtivo = Get.put(UsuariosModel(
+        nome: 'zerado ',
+        paroquia: 0,
+        ultimoAcesso: DateTime(1900),
+        grupo: 2,
+        bloqueado: true,
+        emails: [])).obs;
+    super.onInit();
   }
 }

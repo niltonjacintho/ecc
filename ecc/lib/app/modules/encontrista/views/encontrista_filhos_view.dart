@@ -71,19 +71,34 @@ class FilhosFormView extends GetView<EncontristaController> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w600),
                       ),
-                      const FastTextField(
+                      FastTextField(
                         labelText: 'Informe o seu nome:',
                         name: 'nome_1',
+                        initialValue: encontristaController
+                            .encontristaModel!.filhos[0].nome,
                       ),
                       FastTextField(
                         labelText: 'Data de Nascimento',
                         inputFormatters: [configController.dateMaskFormatter],
                         name: 'nascimento_1',
+                        initialValue: encontristaController
+                            .encontristaModel!.filhos[0].dataNascimento
+                            .toIso8601String()
+                            .split('T')
+                            .first
+                            .replaceAll('-', '/'),
                       ),
-                      const FastDropdown(
+                      FastDropdown(
                         name: 'sexo_1',
                         labelText: 'Qual o sexo?',
-                        items: ['Feminino', 'Masculino'],
+                        items: const ['Feminino', 'Masculino'],
+                        initialValue: encontristaController
+                                    .encontristaModel!.filhos[0].sexo
+                                    .toLowerCase()
+                                    .trim() ==
+                                'feminino'
+                            ? true
+                            : false,
                       ),
                       const SizedBox(
                         height: 20,
@@ -106,19 +121,33 @@ class FilhosFormView extends GetView<EncontristaController> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w600),
                       ),
-                      const FastTextField(
+                      FastTextField(
                         labelText: 'Informe o seu nome:',
                         name: 'nome_2',
+                        initialValue: encontristaController
+                            .encontristaModel!.filhos[1].nome,
                       ),
                       FastTextField(
-                        labelText: 'Data de Nascimento',
-                        inputFormatters: [configController.dateMaskFormatter],
-                        name: 'nascimento_2',
-                      ),
-                      const FastDropdown(
+                          labelText: 'Data de Nascimento',
+                          inputFormatters: [configController.dateMaskFormatter],
+                          name: 'nascimento_2',
+                          initialValue: encontristaController
+                              .encontristaModel!.filhos[1].dataNascimento
+                              .toIso8601String()
+                              .split('T')
+                              .first
+                              .replaceAll('-', '/')),
+                      FastDropdown(
                         name: 'sexo_2',
                         labelText: 'Qual o sexo?',
-                        items: ['Feminino', 'Masculino'],
+                        items: const ['Feminino', 'Masculino'],
+                        initialValue: encontristaController
+                                    .encontristaModel!.filhos[1].sexo
+                                    .toLowerCase()
+                                    .trim() ==
+                                'feminino'
+                            ? true
+                            : false,
                       ),
                       const SizedBox(
                         height: 20,
@@ -146,14 +175,26 @@ class FilhosFormView extends GetView<EncontristaController> {
                         name: 'nome_3',
                       ),
                       FastTextField(
-                        labelText: 'Data de Nascimento',
-                        inputFormatters: [configController.dateMaskFormatter],
-                        name: 'nascimento_3',
-                      ),
-                      const FastDropdown(
+                          labelText: 'Data de Nascimento',
+                          inputFormatters: [configController.dateMaskFormatter],
+                          name: 'nascimento_3',
+                          initialValue: encontristaController
+                              .encontristaModel!.filhos[2].dataNascimento
+                              .toIso8601String()
+                              .split('T')
+                              .first
+                              .replaceAll('-', '/')),
+                      FastDropdown(
                         name: 'sexo_3',
                         labelText: 'Qual o sexo?',
-                        items: ['Feminino', 'Masculino'],
+                        items: const ['Feminino', 'Masculino'],
+                        initialValue: encontristaController
+                                    .encontristaModel!.filhos[2].sexo
+                                    .toLowerCase()
+                                    .trim() ==
+                                'feminino'
+                            ? true
+                            : false,
                       ),
                       const SizedBox(
                         height: 20,
@@ -181,14 +222,26 @@ class FilhosFormView extends GetView<EncontristaController> {
                         name: 'nome_4',
                       ),
                       FastTextField(
-                        labelText: 'Data de Nascimento',
-                        inputFormatters: [configController.dateMaskFormatter],
-                        name: 'nascimento_4',
-                      ),
-                      const FastDropdown(
+                          labelText: 'Data de Nascimento',
+                          inputFormatters: [configController.dateMaskFormatter],
+                          name: 'nascimento_4',
+                          initialValue: encontristaController
+                              .encontristaModel!.filhos[3].dataNascimento
+                              .toIso8601String()
+                              .split('T')
+                              .first
+                              .replaceAll('-', '/')),
+                      FastDropdown(
                         name: 'sexo_4',
                         labelText: 'Qual o sexo?',
-                        items: ['Feminino', 'Masculino'],
+                        items: const ['Feminino', 'Masculino'],
+                        initialValue: encontristaController
+                                    .encontristaModel!.filhos[3].sexo
+                                    .toLowerCase()
+                                    .trim() ==
+                                'feminino'
+                            ? true
+                            : false,
                       ),
                       const SizedBox(
                         height: 20,

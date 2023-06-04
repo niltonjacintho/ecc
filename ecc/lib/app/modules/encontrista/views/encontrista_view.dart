@@ -4,6 +4,7 @@ import 'package:ecc/app/modules/encontrista/views/encontrista_endereco_view.dart
 import 'package:ecc/app/modules/encontrista/views/encontrista_esposo_view.dart';
 import 'package:ecc/app/modules/encontrista/views/encontrista_filhos_view.dart';
 import 'package:ecc/app/modules/encontrista/views/encontro_esposa_view.dart';
+import 'package:ecc/app/modules/usuarios/controllers/usuarios_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -24,9 +25,11 @@ class EncontristaView extends GetView<EncontristaController> {
     EnderecoFormView enderecoFormView = Get.put(EnderecoFormView());
     FilhosFormView filhosFormView = Get.put(FilhosFormView());
     PageController pageController = PageController();
+    UsuariosController usuariosController = Get.find<UsuariosController>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Atualize sues dados'),
+        title: Text(
+            ' - ${usuariosController.usuarioAtivo!.value.nome} Atualize sues dados '),
         centerTitle: true,
       ),
       body: Column(

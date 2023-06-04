@@ -44,30 +44,43 @@ class EnderecoFormView extends GetView<EncontristaController> {
                   'Aonde vocês moram?',
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                const FastTextField(
+                FastTextField(
                   labelText: 'Rua:',
                   name: 'logradouro',
+                  initialValue: encontristaController
+                      .encontristaModel!.endereco.logradouro,
                 ),
-                const FastTextField(
+                FastTextField(
                   labelText: 'Bairro:',
                   name: 'bairro',
+                  initialValue:
+                      encontristaController.encontristaModel!.endereco.bairro,
                 ),
-                const FastTextField(
+                FastTextField(
                   labelText: 'Cidade:',
                   name: 'cidade',
+                  initialValue:
+                      encontristaController.encontristaModel!.endereco.cidade,
                 ),
-                const FastTextField(
+                FastTextField(
                   labelText: 'Estado:',
                   name: 'uf',
+                  initialValue:
+                      encontristaController.encontristaModel!.endereco.estado,
                 ),
-                const FastTextField(
+                FastTextField(
                   labelText: 'Complemento:',
                   name: 'complemento',
+                  initialValue: encontristaController
+                      .encontristaModel!.endereco.complemento,
                 ),
                 FastTextField(
                   labelText: 'CEP:',
                   inputFormatters: [configController.cepMaskFormatter],
                   name: 'cep',
+                  initialValue: encontristaController
+                      .encontristaModel!.endereco.cep
+                      .toString(),
                 ),
               ],
             ),

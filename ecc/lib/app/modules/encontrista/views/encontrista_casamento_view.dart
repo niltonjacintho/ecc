@@ -41,15 +41,19 @@ class CasamentoFormView extends GetView<EncontristaController> {
                   'Dados do seu casamento',
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
-                const FastTextField(
+                FastTextField(
                   labelText: 'Em qual igreja vcs se casaram::',
-                  autovalidateMode: AutovalidateMode.always,
                   name: 'igreja',
+                  initialValue:
+                      encontristaController.encontristaModel!.casamento.igreja,
                 ),
                 FastTextField(
                   labelText: 'Que dia foi?',
                   inputFormatters: [configController.dateMaskFormatter],
                   name: 'data',
+                  initialValue: encontristaController
+                      .encontristaModel!.casamento.data
+                      .toString(),
                 ),
               ],
             ),

@@ -20,6 +20,25 @@ class EncontristaController extends GetxController {
     {'nome': 'Endereços', 'descricao': 'Dados do Casal'}
   ];
 
+  Future<bool> get(String id) async {
+    try {
+      await Firebase.initializeApp();
+      final CollectionReference encontristaCollection =
+          FirebaseFirestore.instance.collection('encontrista');
+      await encontristaCollection
+          .doc(id
+              .trim()
+              .toLowerCase()) //configController.usuariosModel!.nome.trim())
+          .get()
+          .then(
+            (value) => encontristaModel = value as EncontristaModel,
+          );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<bool> gravar() async {
     try {
       await Firebase.initializeApp();
