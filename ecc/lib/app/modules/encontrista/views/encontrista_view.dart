@@ -13,11 +13,12 @@ import '../controllers/encontrista_controller.dart';
 
 class EncontristaView extends GetView<EncontristaController> {
   const EncontristaView({Key? key}) : super(key: key);
-  static EncontristaController encontristaController =
-      Get.put(EncontristaController());
 
   @override
   Widget build(BuildContext context) {
+    EncontristaController encontristaController =
+        Get.put(EncontristaController());
+
     HttpImportController httpImportController = Get.put(HttpImportController());
     EsposaFormView esposaForm = Get.put(EsposaFormView());
     EsposoFormView esposoForm = Get.put(EsposoFormView());
@@ -25,7 +26,8 @@ class EncontristaView extends GetView<EncontristaController> {
     EnderecoFormView enderecoFormView = Get.put(EnderecoFormView());
     FilhosFormView filhosFormView = Get.put(FilhosFormView());
     PageController pageController = PageController();
-    UsuariosController usuariosController = Get.find<UsuariosController>();
+    UsuariosController usuariosController = Get.put(UsuariosController());
+    encontristaController.get(usuariosController.usuarioAtivo!.value.nome);
     return Scaffold(
       appBar: AppBar(
         title: Text(

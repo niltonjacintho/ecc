@@ -57,6 +57,10 @@ class UsuariosController extends GetxController {
     }
   }
 
+  bool containsEmail(List<Emails> list, Emails email) {
+    return list.any((element) => element.email == email.email);
+  }
+
   Future<bool> userExists(String documentId) async {
     final document = _usuariosCollection.doc(documentId);
     print(documentId);
@@ -86,7 +90,10 @@ class UsuariosController extends GetxController {
           snapshot['emails']
               .forEach((value) => emails.add(Emails(email: value['email'])));
         } catch (e) {}
-        emails.add(Emails(email: userCredential!.user!.email.toString()));
+        if (!containsEmail(
+            emails, Emails(email: userCredential!.user!.email!))) {
+          emails.add(Emails(email: userCredential.user!.email.toString()));
+        }
         UsuariosModel usuariosModel = UsuariosModel(
             nome: snapshot['nome'],
             paroquia: 0,
@@ -126,7 +133,7 @@ class UsuariosController extends GetxController {
     print(
         '=================== INICIALIZANDO USUARIOS ==============================');
     usuarioAtivo = usuarioAtivo = Get.put(UsuariosModel(
-        nome: 'zerado ',
+        nome: ' ',
         paroquia: 0,
         ultimoAcesso: DateTime(1900),
         grupo: 2,

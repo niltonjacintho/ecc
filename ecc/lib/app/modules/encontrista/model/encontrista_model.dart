@@ -1,4 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class EncontristaModel {
+  Marido marido = Marido(
+      nome: '', photo: '', nascimento: DateTime(2000), telefone: '', email: '');
+  Esposa esposa = Esposa(
+      nome: '', photo: '', nascimento: DateTime(2000), telefone: '', email: '');
+  Endereco endereco = Endereco(
+      logradouro: '',
+      bairro: '',
+      cidade: '',
+      estado: '',
+      cep: 0,
+      complemento: '');
+  Casamento casamento = Casamento(data: DateTime(2000), igreja: '');
+  List<Filhos> filhos = [
+    Filhos(nome: '', dataNascimento: DateTime(2000), sexo: '')
+  ];
+  List<Encontro> encontro = [
+    Encontro(equipe: '', ano: 2000, coordenador: false, observacao: '')
+  ];
   EncontristaModel({
     required this.marido,
     required this.esposa,
@@ -7,14 +27,18 @@ class EncontristaModel {
     required this.filhos,
     required this.encontro,
   });
-  late final Marido marido;
-  late final Esposa esposa;
-  late final Endereco endereco;
-  late final Casamento casamento;
-  late final List<Filhos> filhos;
-  late final List<Encontro> encontro;
 
   EncontristaModel.fromJson(Map<String, dynamic> json) {
+    marido = Marido.fromJson(json['marido']);
+    esposa = Esposa.fromJson(json['esposa']);
+    endereco = Endereco.fromJson(json['endereco']);
+    casamento = Casamento.fromJson(json['casamento']);
+    filhos = List.from(json['filhos']).map((e) => Filhos.fromJson(e)).toList();
+    encontro =
+        List.from(json['encontro']).map((e) => Encontro.fromJson(e)).toList();
+  }
+
+  fromJson(Map<String, dynamic> json) {
     marido = Marido.fromJson(json['marido']);
     esposa = Esposa.fromJson(json['esposa']);
     endereco = Endereco.fromJson(json['endereco']);
@@ -53,9 +77,10 @@ class Marido {
   });
 
   Marido.fromJson(Map<String, dynamic> json) {
+    Timestamp t = json['nascimento'];
     nome = json['nome'];
     photo = json['photo'];
-    nascimento = json['nascimento'];
+    nascimento = t.toDate();
     telefone = json['telefone'];
     email = json['email'];
   }
@@ -91,9 +116,10 @@ class Esposa {
   // late final String email;
 
   Esposa.fromJson(Map<String, dynamic> json) {
+    Timestamp t = json['nascimento'];
     nome = json['nome'];
     photo = json['photo'];
-    nascimento = json['nascimento'];
+    nascimento = t.toDate();
     telefone = json['telefone'];
     email = json['email'];
   }
@@ -155,7 +181,8 @@ class Casamento {
   });
 
   Casamento.fromJson(Map<String, dynamic> json) {
-    data = json['data'];
+    Timestamp t = json['data'];
+    data = t.toDate();
     igreja = json['igreja'];
   }
 
@@ -178,8 +205,9 @@ class Filhos {
   });
 
   Filhos.fromJson(Map<String, dynamic> json) {
+    Timestamp t = json['data_nascimento'];
     nome = json['nome'];
-    dataNascimento = json['data_nascimento'];
+    dataNascimento = t.toDate();
     sexo = json['sexo'];
   }
 

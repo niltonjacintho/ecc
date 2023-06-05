@@ -21,18 +21,22 @@ class EncontristaController extends GetxController {
   ];
 
   Future<bool> get(String id) async {
+    print('%%%%%%%%%%%%%%%%%%%%%%%  GET ');
     try {
       await Firebase.initializeApp();
       final CollectionReference encontristaCollection =
           FirebaseFirestore.instance.collection('encontrista');
-      await encontristaCollection
+      var value = encontristaCollection
           .doc(id
               .trim()
               .toLowerCase()) //configController.usuariosModel!.nome.trim())
           .get()
-          .then(
-            (value) => encontristaModel = value as EncontristaModel,
-          );
+          .then((value) => {
+                encontristaModel!
+                    .fromJson(value.data() as Map<String, dynamic>),
+                print('1111')
+              });
+
       return true;
     } catch (e) {
       return false;

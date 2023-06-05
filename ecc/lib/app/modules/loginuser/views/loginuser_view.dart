@@ -7,7 +7,8 @@ import 'package:get/get.dart';
 class LoginuserView extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final UsuariosController usuariosController = Get.put(UsuariosController());
+  UsuariosController usuariosController =
+      Get.put(UsuariosController(), permanent: true);
 
   LoginuserView({super.key});
 
@@ -61,6 +62,7 @@ class LoginuserView extends StatelessWidget {
                         passwordController.value.text);
                     if (loginOk) {
                       Get.offAll(const HomeView());
+                      //Get.to(const HomeView());
                     }
                   },
                   child: const Text('Entrar'),
