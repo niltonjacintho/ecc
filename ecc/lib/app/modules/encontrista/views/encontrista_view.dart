@@ -27,7 +27,6 @@ class EncontristaView extends GetView<EncontristaController> {
     FilhosFormView filhosFormView = Get.put(FilhosFormView());
     PageController pageController = PageController();
     UsuariosController usuariosController = Get.put(UsuariosController());
-    encontristaController.get(usuariosController.usuarioAtivo!.value.nome);
     return Scaffold(
       appBar: AppBar(
         title: Text(

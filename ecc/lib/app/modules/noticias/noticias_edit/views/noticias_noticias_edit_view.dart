@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/noticias/model/noticias_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../controllers/noticias_noticias_edit_controller.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class NoticiasEditView extends GetView<NoticiasEditController> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -90,32 +90,9 @@ class NoticiasEditView extends GetView<NoticiasEditController> {
     }
   }
 
-  Future<String> _uploadImageToFirebaseStorage() async {
-    final String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    String retorno = '';
-    try {
-      final firebase_storage.Reference ref = firebase_storage
-          .FirebaseStorage.instance
-          .ref()
-          .child('images')
-          .child(fileName);
-
-      final firebase_storage.UploadTask uploadTask =
-          ref.putFile(_selectedImage.value!);
-      final firebase_storage.TaskSnapshot taskSnapshot = await uploadTask;
-
-      await taskSnapshot.ref.getDownloadURL().then((value) => {
-            retorno = value,
-          });
-      return retorno;
-    } catch (e) {
-      retorno = e.toString();
-      return 'ERROR';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    ConfigController configController = Get.put(ConfigController());
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -193,11 +170,13 @@ class NoticiasEditView extends GetView<NoticiasEditController> {
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        _uploadImageToFirebaseStorage().then((value) async => {
-                              noticiasEditController.noticiasModel.value
-                                  .urlImagemPrincipal = value,
-                              await _salvarDados(context, value)
-                            });
+                        configController
+                            .uploadImageToFirebaseStorage(_selectedImage.value)
+                            .then((value) async => {
+                                  noticiasEditController.noticiasModel.value
+                                      .urlImagemPrincipal = value,
+                                  await _salvarDados(context, value)
+                                });
                         Get.back();
                       }
                     },

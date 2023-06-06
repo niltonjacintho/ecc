@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
@@ -41,6 +43,26 @@ class EncontristaController extends GetxController {
     } catch (e) {
       return false;
     }
+  }
+
+  File createImageFile(TipoArquivoPhoto tipo) {
+    File f = File('');
+    try {
+      switch (tipo) {
+        case TipoArquivoPhoto.Marido:
+          if (encontristaModel!.marido.photo.trim() != '') {
+            f = File(encontristaModel!.marido.photo.trim());
+          }
+          break;
+        case TipoArquivoPhoto.Esposa:
+          if (encontristaModel!.esposa.photo.trim() != '') {
+            f = File(encontristaModel!.esposa.photo.trim());
+          }
+          break;
+        default:
+      }
+    } catch (e) {}
+    return f;
   }
 
   Future<bool> gravar() async {

@@ -9,8 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 enum TipoPhoto { galeria, camera }
+
+enum TipoArquivoPhoto { Marido, Esposa, Casal }
 
 class ConfigController extends GetxController {
   final RxDouble _fontSize = 30.0.obs;
@@ -131,5 +134,31 @@ class ConfigController extends GetxController {
       context: context,
       artDialogArgs: ArtDialogArgs(type: tipo, title: titulo, text: texto),
     );
+  }
+
+  Future<String> uploadImageToFirebaseStorage(File? image,
+      {String fileName = ''}) async {
+    fileName = fileName == ''
+        ? DateTime.now().millisecondsSinceEpoch.toString()
+        : fileName;
+    String retorno = '';
+    try {
+      final firebase_storage.Reference ref = firebase_storage
+          .FirebaseStorage.instance
+          .ref()
+          .child('images')
+          .child(fileName);
+
+      final firebase_storage.UploadTask uploadTask = ref.putFile(image!);
+      final firebase_storage.TaskSnapshot taskSnapshot = await uploadTask;
+
+      await taskSnapshot.ref.getDownloadURL().then((value) => {
+            retorno = value,
+          });
+      return retorno;
+    } catch (e) {
+      retorno = e.toString();
+      return '';
+    }
   }
 }

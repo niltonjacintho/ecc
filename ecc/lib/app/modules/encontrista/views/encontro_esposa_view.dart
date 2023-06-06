@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/encontrista/controllers/encontrista_controller.dart';
+import 'package:ecc/app/modules/usuarios/controllers/usuarios_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_forms/flutter_fast_forms.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -16,6 +17,8 @@ class EsposaFormView extends GetView<EncontristaController> {
   final EncontristaController encontristaController =
       Get.put(EncontristaController());
 
+  final UsuariosController usuariosController = Get.put(UsuariosController());
+
   final Rx<File?> _selectedImage = Rx<File?>(null);
   final formKey = GlobalKey<FormState>();
 
@@ -27,6 +30,12 @@ class EsposaFormView extends GetView<EncontristaController> {
 
       if (pickedImage != null) {
         _selectedImage.value = File(pickedImage.path);
+        configController
+            .uploadImageToFirebaseStorage(_selectedImage.value,
+                fileName:
+                    '${usuariosController.usuarioAtivo!.value.nome.trim()}-photoEsposa')
+            .then((value) =>
+                encontristaController.encontristaModel!.esposa.photo = value);
       }
     }
 
@@ -36,9 +45,17 @@ class EsposaFormView extends GetView<EncontristaController> {
 
       if (pickedImage != null) {
         _selectedImage.value = File(pickedImage.path);
+        configController
+            .uploadImageToFirebaseStorage(_selectedImage.value,
+                fileName:
+                    '${usuariosController.usuarioAtivo!.value.nome.trim()}-photoEsposo')
+            .then((value) =>
+                encontristaController.encontristaModel!.esposa.photo = value);
       }
     }
 
+    _selectedImage.value =
+        encontristaController.createImageFile(TipoArquivoPhoto.Esposa);
     return MaterialApp(
       home: Scaffold(
         body: SingleChildScrollView(
@@ -96,7 +113,7 @@ class EsposaFormView extends GetView<EncontristaController> {
                   inputFormatters: [configController.dateMaskFormatter],
                   name: 'nascimento',
                   initialValue: encontristaController
-                      .encontristaModel!.marido.nascimento
+                      .encontristaModel!.esposa.nascimento
                       .toIso8601String()
                       .split('T')
                       .first
@@ -147,8 +164,9 @@ class EsposaFormView extends GetView<EncontristaController> {
                           return Column(
                             children: [
                               const SizedBox(height: 16.0),
-                              Image.file(
-                                _selectedImage.value!,
+                              Image.network(
+                                encontristaController
+                                    .encontristaModel!.esposa.photo,
                                 height: 200,
                               ),
                             ],
