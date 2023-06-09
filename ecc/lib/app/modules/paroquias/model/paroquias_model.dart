@@ -11,6 +11,13 @@ class ParoquiasModel {
   late final String detalhes;
   late final String latitude;
   late final String longitude;
+  late final String? shortName = nome
+      .split('-')[0]
+      .toLowerCase()
+      .replaceAll('Paroquia', '')
+      .replaceAll('Paróquia', '')
+      .toUpperCase();
+  late final String? bairro = nome.split('-')[1].toUpperCase();
 
   ParoquiasModel.fromJson(Map<String, dynamic> json) {
     nome = json['nome'];

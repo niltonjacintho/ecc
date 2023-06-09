@@ -7,7 +7,7 @@ class ParoquiasController extends GetxController {
 
   ParoquiasModel paroquiasModel = Get.put(ParoquiasModel(
       nome: '', id: '', detalhes: '', latitude: '', longitude: ''));
-
+  Rx<bool> isInitialized = false.obs;
   List<ParoquiasModel> lista = [];
 
   Future<List<ParoquiasModel>> restoreParoquiaListFromFirestore() async {
@@ -19,7 +19,7 @@ class ParoquiasController extends GetxController {
     QuerySnapshot snapshot = await paroquiaCollection.get();
 
     // List to store the restored ParoquiaModel objects
-    List<ParoquiasModel> paroquiaList = [];
+    lista = [];
 
     final allData = snapshot.docs.map((doc) {
       var data = doc.data();
@@ -36,8 +36,15 @@ class ParoquiasController extends GetxController {
         latitude: data['latitude'],
         longitude: data['longitude'],
       );
-      paroquiaList.add(paroquia);
+      lista.add(paroquia);
     }
-    return paroquiaList;
+    isInitialized.value = true;
+    return lista;
+  }
+
+  @override
+  Future<void> onInit() async {
+    await restoreParoquiaListFromFirestore();
+    super.onInit();
   }
 }
