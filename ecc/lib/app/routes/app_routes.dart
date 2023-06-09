@@ -16,6 +16,7 @@ abstract class Routes {
   static const USUARIOS = _Paths.USUARIOS;
   static const LOGINUSER = _Paths.LOGINUSER;
   static const LIXO = _Paths.LIXO;
+  static const PAROQUIAS = _Paths.PAROQUIAS;
 }
 
 abstract class _Paths {
@@ -32,4 +33,5 @@ abstract class _Paths {
   static const USUARIOS = '/usuarios';
   static const LOGINUSER = '/loginuser';
   static const LIXO = '/lixo';
+  static const PAROQUIAS = '/paroquias';
 }

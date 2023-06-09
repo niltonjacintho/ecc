@@ -27,73 +27,85 @@ class EncontristaView extends GetView<EncontristaController> {
     FilhosFormView filhosFormView = Get.put(FilhosFormView());
     PageController pageController = PageController();
     UsuariosController usuariosController = Get.put(UsuariosController());
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
             ' - ${usuariosController.usuarioAtivo!.value.nome} Atualize sues dados '),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 8,
-            child: PageView(
-              scrollDirection: Axis.vertical,
-              pageSnapping: true,
-              physics: const BouncingScrollPhysics(),
-              controller: pageController,
-              children: <Widget>[
-                esposaForm,
-                esposoForm,
-                casamentoFormView,
-                enderecoFormView,
-                filhosFormView,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Text(
-                        encontristaController.listaPaginas[4]['nome']!,
-                        style: const TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w900,
+      body: Builder(
+        builder: (BuildContext context) {
+          return Obx(
+            () => !encontristaController.isInitialized.value
+                ? const Center(
+                    child: CircularProgressIndicator(color: Colors.blue))
+                : Column(
+                    children: [
+                      Expanded(
+                        flex: 8,
+                        child: PageView(
+                          scrollDirection: Axis.vertical,
+                          pageSnapping: true,
+                          physics: const BouncingScrollPhysics(),
+                          controller: pageController,
+                          children: <Widget>[
+                            esposaForm,
+                            esposoForm,
+                            casamentoFormView,
+                            enderecoFormView,
+                            filhosFormView,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Text(
+                                    encontristaController.listaPaginas[4]
+                                        ['nome']!,
+                                    style: const TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                          onPageChanged: (value) {
+                            encontristaController
+                                .gravar(); //pageController.jumpToPage(3);
+                          },
                         ),
                       ),
-                    )
-                  ],
-                )
-              ],
-              onPageChanged: (value) {
-                encontristaController.gravar(); //pageController.jumpToPage(3);
-              },
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  child: const Text('Voltar'),
-                  onPressed: () {
-                    pageController.previousPage(
-                        duration: const Duration(microseconds: 10),
-                        curve: Curves.bounceIn);
-                  },
-                ),
-                ElevatedButton(
-                  child: const Text('Próxima'),
-                  onPressed: () {
-                    pageController.nextPage(
-                        duration: const Duration(microseconds: 10),
-                        curve: Curves.bounceIn);
-                  },
-                ),
-              ],
-            ),
-          )
-        ],
+                      Expanded(
+                        flex: 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ElevatedButton(
+                              child: const Text('Voltar'),
+                              onPressed: () {
+                                pageController.previousPage(
+                                    duration: const Duration(microseconds: 10),
+                                    curve: Curves.bounceIn);
+                              },
+                            ),
+                            ElevatedButton(
+                              child: const Text('Próxima'),
+                              onPressed: () {
+                                pageController.nextPage(
+                                    duration: const Duration(microseconds: 10),
+                                    curve: Curves.bounceIn);
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+          );
+        },
       ),
     );
   }

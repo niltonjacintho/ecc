@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
+import 'package:ecc/app/modules/usuarios/controllers/usuarios_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,7 +11,8 @@ import 'package:get/get.dart';
 class EncontristaController extends GetxController {
   EncontristaModel? encontristaModel;
   ConfigController configController = Get.put(ConfigController());
-
+  UsuariosController usuariosController = Get.put(UsuariosController());
+  Rx<bool> isInitialized = false.obs;
   Rx<GlobalKey<FormState>> formKeyEsposo = GlobalKey<FormState>().obs;
 
   final listaPaginas = [
@@ -28,7 +30,7 @@ class EncontristaController extends GetxController {
       await Firebase.initializeApp();
       final CollectionReference encontristaCollection =
           FirebaseFirestore.instance.collection('encontrista');
-      var value = encontristaCollection
+      await encontristaCollection
           .doc(id
               .trim()
               .toLowerCase()) //configController.usuariosModel!.nome.trim())
@@ -36,7 +38,7 @@ class EncontristaController extends GetxController {
           .then((value) => {
                 encontristaModel!
                     .fromJson(value.data() as Map<String, dynamic>),
-                print('1111')
+                print('1111 ${encontristaModel!.esposa.nome}')
               });
 
       return true;
@@ -87,7 +89,7 @@ class EncontristaController extends GetxController {
   }
 
   @override
-  void onInit() {
+  Future<void> onInit() async {
     print(
         '============================== INICIALIZANDO ==============================');
     formKeyEsposo = GlobalKey<FormState>().obs;
@@ -121,6 +123,9 @@ class EncontristaController extends GetxController {
         encontro: [
           Encontro(equipe: '', ano: 0, coordenador: false, observacao: '')
         ]));
+    await get(usuariosController.usuarioAtivo!.value.nome.trim()).then((value) {
+      isInitialized.value = true;
+    });
     super.onInit();
   }
 }

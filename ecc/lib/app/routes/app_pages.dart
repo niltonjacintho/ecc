@@ -20,6 +20,8 @@ import '../modules/noticias/noticias_list/bindings/noticias_noticias_list_bindin
 import '../modules/noticias/noticias_list/views/noticias_noticias_list_view.dart';
 import '../modules/noticias/view/bindings/noticias_view_binding.dart';
 import '../modules/noticias/view/views/noticias_view_view.dart';
+import '../modules/paroquias/bindings/paroquias_binding.dart';
+import '../modules/paroquias/views/paroquias_view.dart';
 import '../modules/usuarios/bindings/usuarios_binding.dart';
 import '../modules/usuarios/views/usuarios_view.dart';
 
@@ -88,6 +90,11 @@ class AppPages {
       name: _Paths.LIXO,
       page: () => const LixoView(),
       binding: LixoBinding(),
+    ),
+    GetPage(
+      name: _Paths.PAROQUIAS,
+      page: () => const ParoquiasView(),
+      binding: ParoquiasBinding(),
     ),
   ];
 }

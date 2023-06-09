@@ -2,6 +2,7 @@ import 'package:ecc/app/modules/encontrista/views/encontrista_view.dart';
 import 'package:ecc/app/modules/home/controllers/navbar_class.dart';
 import 'package:ecc/app/modules/login/views/login_view.dart';
 import 'package:ecc/app/modules/noticias/noticias_list/views/noticias_noticias_list_view.dart';
+import 'package:ecc/app/modules/paroquias/views/paroquias_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boom_menu_new/flutter_boom_menu_new.dart';
 
@@ -104,12 +105,12 @@ class HomeView extends GetView<HomeController> {
           MenuItemModel(
             child: Image.asset('assets/images/profile_icon.png',
                 color: const Color.fromARGB(255, 248, 248, 248)),
-            title: "Gestão de notícias",
+            title: "Paróquias do Rio de Janeiro",
             titleColor: Colors.white,
-            subtitle: "Manutenção das notícias",
+            subtitle: "Lista das paroquias do nosso estado!!",
             subTitleColor: Colors.white,
             backgroundColor: const Color.fromARGB(255, 8, 52, 32),
-            onTap: () => print('FOURTH CHILD'),
+            onTap: () => Get.to(const ParoquiasView()),
             elevation: 10,
           )
         ]);

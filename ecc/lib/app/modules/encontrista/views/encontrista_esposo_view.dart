@@ -160,10 +160,27 @@ class EsposoFormView extends GetView<EncontristaController> {
                             children: [
                               const SizedBox(height: 16.0),
                               Image.network(
-                                encontristaController
-                                    .encontristaModel!.marido.photo,
-                                height: 200,
-                              ),
+                                  encontristaController
+                                      .encontristaModel!.marido.photo,
+                                  height: 200, loadingBuilder:
+                                      (BuildContext context, Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                if (loadingProgress == null) {
+                                  return child;
+                                }
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                        : null,
+                                  ),
+                                );
+                              }),
+
+                              //  ),
                             ],
                           );
                         } else {
