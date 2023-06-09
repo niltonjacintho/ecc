@@ -70,6 +70,7 @@ class UsuariosController extends GetxController {
   }
 
   Future<bool> login(String user, String pass) async {
+    user = user.trim();
     var existe = await userExists(user);
     if (existe) {
       final document = _usuariosCollection.doc(user);

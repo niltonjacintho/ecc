@@ -5,10 +5,15 @@ import 'package:get/get.dart';
 class ParoquiasController extends GetxController {
   //TODO: Implement ParoquiasController
 
-  ParoquiasModel paroquiasModel = Get.put(ParoquiasModel(
+  ParoquiasModel paroquiasAtiva = Get.put(ParoquiasModel(
       nome: '', id: '', detalhes: '', latitude: '', longitude: ''));
   Rx<bool> isInitialized = false.obs;
   List<ParoquiasModel> lista = [];
+  Rx<int> index = 0.obs;
+
+  setIndex() {
+    index.value = index.value == 0 ? 1 : 0;
+  }
 
   Future<List<ParoquiasModel>> restoreParoquiaListFromFirestore() async {
     // Reference to the "paroquia" collection in Firestore

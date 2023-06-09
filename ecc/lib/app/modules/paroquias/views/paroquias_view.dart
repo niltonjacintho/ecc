@@ -1,5 +1,6 @@
 import 'package:ecc/app/modules/paroquias/model/paroquias_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 import 'package:get/get.dart';
 import 'package:searchable_listview/searchable_listview.dart';
@@ -11,63 +12,94 @@ class ParoquiasView extends GetView<ParoquiasController> {
 
   @override
   Widget build(BuildContext context) {
+    // int index = 0;
     ParoquiasController paroquiasController = Get.put(ParoquiasController());
     //paroquiasController.restoreParoquiaListFromFirestore();
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('ParoquiasView'),
-        centerTitle: true,
-      ),
-      body: Builder(builder: (BuildContext context) {
-        return Obx(
-          () => !paroquiasController.isInitialized.value
-              ? const Center(
-                  child: CircularProgressIndicator(color: Colors.blue))
-              : SearchableList<ParoquiasModel>(
-                  initialList: paroquiasController.lista,
-                  builder: (ParoquiasModel paroquia) =>
-                      ParoquiaItem(paroquia: paroquia),
-                  filter: (value) => paroquiasController.lista
-                      .where(
-                        (element) =>
-                            element.shortName!
-                                .toLowerCase()
-                                .trim()
-                                .contains(value.toLowerCase()) ||
-                            element.bairro!
-                                .toLowerCase()
-                                .trim()
-                                .contains(value.toLowerCase()),
-                      )
-                      .toList(),
-                  asyncListCallback: () async {
-                    await Future.delayed(
-                      const Duration(
-                        milliseconds: 100,
+    return SafeArea(
+      child: Scaffold(
+        body: Builder(builder: (BuildContext context) {
+          return Obx(
+            () => !paroquiasController.isInitialized.value
+                ? const Center(
+                    child: CircularProgressIndicator(color: Colors.blue))
+                : IndexedStack(
+                    index: paroquiasController.index.value,
+                    children: [
+                      SearchableList<ParoquiasModel>(
+                        initialList: paroquiasController.lista,
+                        builder: (ParoquiasModel paroquia) =>
+                            ParoquiaItem(paroquia: paroquia),
+                        filter: (value) => paroquiasController.lista
+                            .where(
+                              (element) =>
+                                  element.shortName!
+                                      .toLowerCase()
+                                      .trim()
+                                      .contains(value.toLowerCase()) ||
+                                  element.bairro!
+                                      .toLowerCase()
+                                      .trim()
+                                      .contains(value.toLowerCase()),
+                            )
+                            .toList(),
+                        // asyncListCallback: () async {
+                        //   await Future.delayed(
+                        //     const Duration(
+                        //       milliseconds: 100,
+                        //     ),
+                        //   );
+                        //   return paroquiasController.lista;
+                        // },
+                        asyncListFilter: (q, list) {
+                          return list
+                              .where((element) => element.nome.contains(q))
+                              .toList();
+                        },
+                        emptyWidget: const EmptyView(),
+                        inputDecoration: InputDecoration(
+                          labelText: "Procurar paróquia",
+                          labelStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.blue,
+                              width: 1.0,
+                            ),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
                       ),
-                    );
-                    return paroquiasController.lista;
-                  },
-                  asyncListFilter: (q, list) {
-                    return list
-                        .where((element) => element.nome.contains(q))
-                        .toList();
-                  },
-                  emptyWidget: const EmptyView(),
-                  inputDecoration: InputDecoration(
-                    labelText: "Search Actor",
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: Colors.blue,
-                        width: 1.0,
+                      Container(
+                        color: const Color.fromARGB(255, 236, 202, 200),
+                        height: MediaQuery.of(context).size.height,
+                        width: MediaQuery.of(context).size.width,
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () => paroquiasController.setIndex(),
+                              child: HtmlWidget(
+                                paroquiasController.paroquiasAtiva.detalhes,
+                                textStyle: const TextStyle(fontSize: 20),
+                                customStylesBuilder: (element) {
+                                  if (element.classes.contains('foo')) {
+                                    return {'color': 'red'};
+                                  }
+
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+                    ],
                   ),
-                ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }
@@ -77,15 +109,12 @@ class EmptyView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          Icons.error,
-          color: Colors.red,
-        ),
-        Text('no actor is found with this name'),
-      ],
+    return const Center(
+      child: Text(
+        'Não encontrei paróquias para esta pesquisa',
+        style: TextStyle(fontSize: 22),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 }
@@ -100,6 +129,8 @@ class ParoquiaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ParoquiasController paroquiasController = Get.put(ParoquiasController());
+    paroquiasController.paroquiasAtiva = paroquia;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -114,27 +145,33 @@ class ParoquiaItem extends StatelessWidget {
               width: 10,
             ),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    paroquia.shortName!,
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
-                    softWrap: false,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Text(
-                    paroquia.bairro!,
-                    style: const TextStyle(
-                      color: Colors.black,
+              child: GestureDetector(
+                onTap: () {
+                  paroquiasController.paroquiasAtiva = paroquia;
+                  paroquiasController.setIndex();
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      paroquia.shortName!,
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                      softWrap: false,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                    Text(
+                      paroquia.bairro!,
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
