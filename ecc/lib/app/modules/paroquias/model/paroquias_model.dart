@@ -1,4 +1,14 @@
 class ParoquiasModel {
+  String getParoco(String detalhe) {
+    if (detalhe.toLowerCase().contains('pároco')) {
+      var linha = detalhe.substring(detalhe.toLowerCase().indexOf('pároco'));
+      linha = linha.substring(0, linha.toLowerCase().indexOf('</li>'));
+      return linha.split('-')[1].trim();
+    }
+
+    return '';
+  }
+
   ParoquiasModel({
     required this.nome,
     required this.id,
@@ -17,6 +27,7 @@ class ParoquiasModel {
       .replaceAll('Paroquia', '')
       .replaceAll('Paróquia', '')
       .toUpperCase();
+  late final String? paroco = getParoco(detalhes);
   late final String? bairro = nome.split('-')[1].toUpperCase();
 
   ParoquiasModel.fromJson(Map<String, dynamic> json) {

@@ -165,7 +165,7 @@ class ParoquiaItem extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      paroquia.bairro!,
+                      paroquia.paroco!,
                       style: const TextStyle(
                         color: Colors.black,
                       ),
