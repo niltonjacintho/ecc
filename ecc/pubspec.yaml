@@ -32,6 +32,9 @@ dependencies:
   art_sweetalert: ^0.0.5
   searchable_listview: ^2.4.0
   flutter_widget_from_html: ^0.10.1
+  googleapis: ^11.2.0
+  cool_alert: ^2.0.1
+  easy_image_viewer: ^1.2.1
   
   
 dev_dependencies: 

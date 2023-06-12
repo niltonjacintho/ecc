@@ -73,7 +73,8 @@ class EncontristaController extends GetxController {
       final CollectionReference encontristaCollection =
           FirebaseFirestore.instance.collection('encontrista');
       await encontristaCollection
-          .doc('nilton') //configController.usuariosModel!.nome.trim())
+          .doc(usuariosController.usuarioAtivo!.value
+              .nome) //configController.usuariosModel!.nome.trim())
           .set(encontristaModel!.toJson());
       print('gravou  -  ${encontristaModel!.toJson()}');
       //

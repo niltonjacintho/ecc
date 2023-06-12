@@ -1,3 +1,5 @@
+import 'package:art_sweetalert/art_sweetalert.dart';
+import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/home/views/home_view.dart';
 import 'package:ecc/app/modules/usuarios/controllers/usuarios_controller.dart';
 import 'package:ecc/app/modules/usuarios/views/usuarios_view.dart';
@@ -23,6 +25,7 @@ class LoginuserView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ConfigController configController = Get.put(ConfigController());
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -58,11 +61,18 @@ class LoginuserView extends StatelessWidget {
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () async {
+                    usuariosController.context = context;
                     var loginOk = await login(usernameController.value.text,
                         passwordController.value.text);
                     if (loginOk) {
                       Get.offAll(const HomeView());
                       //Get.to(const HomeView());
+                    } else {
+                      // ignore: use_build_context_synchronously
+                      configController.showDialog(context,
+                          texto:
+                              'Não foi possivel conectar. Verifique seu usuário e senha e se vc esta com acesso a internet!',
+                          tipo: ArtSweetAlertType.danger);
                     }
                   },
                   child: const Text('Entrar'),

@@ -1,6 +1,6 @@
 import 'package:ecc/app/modules/encontrista/views/encontrista_view.dart';
 import 'package:ecc/app/modules/home/controllers/navbar_class.dart';
-import 'package:ecc/app/modules/login/views/login_view.dart';
+import 'package:ecc/app/modules/loginuser/views/loginuser_view.dart';
 import 'package:ecc/app/modules/noticias/noticias_list/views/noticias_noticias_list_view.dart';
 import 'package:ecc/app/modules/paroquias/views/paroquias_view.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,7 @@ class HomeView extends GetView<HomeController> {
             subtitle: "Encerrar esta sessão",
             subTitleColor: Colors.grey[850]!,
             backgroundColor: Colors.grey[50]!,
-            onTap: () => Get.off(LoginPage()),
+            onTap: () => Get.off(LoginuserView()),
             elevation: 10,
           ),
           MenuItemModel(

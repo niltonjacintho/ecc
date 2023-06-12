@@ -1,5 +1,6 @@
 import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
+import 'package:ecc/app/modules/loginuser/views/loginuser_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fast_forms/flutter_fast_forms.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -66,17 +67,24 @@ class UsuariosView extends GetView<UsuariosController> {
                     Expanded(
                       child: ElevatedButton(
                         child: const Text('Cadastrar'),
-                        onPressed: () {
+                        onPressed: () async {
                           var a = formKey.currentState;
                           formKey.currentState!.save();
-                          usuariosController
-                              .addUser(usuario, senha)
-                              .then((value) {
+                          await usuariosController
+                              .addUser(context, usuario, senha)
+                              .then((value) async {
                             if (!value) {
                               configController.showDialog(context,
                                   texto:
                                       'Não foi possivel realizar o cadastro. Provavelmente este nome de usuário já existe!! Tente outro nome!',
                                   tipo: ArtSweetAlertType.danger);
+                            } else {
+                              configController.showDialog(context,
+                                  texto:
+                                      'Deu certo!! Vc já esta cadastrado! Faça o login agora!',
+                                  tipo: ArtSweetAlertType.success);
+                              await Future.delayed(const Duration(seconds: 5));
+                              Get.offAll(LoginuserView());
                             }
                           });
                         },
