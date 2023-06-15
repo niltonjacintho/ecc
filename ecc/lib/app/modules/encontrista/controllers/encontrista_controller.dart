@@ -14,6 +14,7 @@ class EncontristaController extends GetxController {
   UsuariosController usuariosController = Get.put(UsuariosController());
   Rx<bool> isInitialized = false.obs;
   Rx<GlobalKey<FormState>> formKeyEsposo = GlobalKey<FormState>().obs;
+  RxList<EncontristaModel> lista = <EncontristaModel>[].obs;
 
   final listaPaginas = [
     {'nome': 'Esposa', 'descricao': 'Dados do Casal'},
@@ -23,6 +24,10 @@ class EncontristaController extends GetxController {
     {'nome': 'Encontros \nEm Desenvolvimento', 'descricao': 'Dados do Casal'},
     {'nome': 'Endereços', 'descricao': 'Dados do Casal'}
   ];
+
+  Future<QuerySnapshot<Map<String, dynamic>>> getLista() {
+    return FirebaseFirestore.instance.collection('encontrista').get();
+  }
 
   Future<bool> get(String id) async {
     print('%%%%%%%%%%%%%%%%%%%%%%%  GET ');
