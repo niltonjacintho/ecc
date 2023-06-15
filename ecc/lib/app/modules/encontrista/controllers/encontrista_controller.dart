@@ -29,6 +29,10 @@ class EncontristaController extends GetxController {
     return FirebaseFirestore.instance.collection('encontrista').get();
   }
 
+  Stream<QuerySnapshot> getLista2() {
+    return FirebaseFirestore.instance.collection('encontrista').snapshots();
+  }
+
   Future<bool> get(String id) async {
     print('%%%%%%%%%%%%%%%%%%%%%%%  GET ');
     try {
