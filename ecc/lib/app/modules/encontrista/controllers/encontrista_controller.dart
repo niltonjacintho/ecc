@@ -1,12 +1,16 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
 import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
 import 'package:ecc/app/modules/usuarios/controllers/usuarios_controller.dart';
+import 'package:ecc/app/modules/usuarios/model/usuario_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:dio2/dio2.dart' as dio;
+import 'package:intl/intl.dart';
 
 class EncontristaController extends GetxController {
   EncontristaModel? encontristaModel;
@@ -30,7 +34,16 @@ class EncontristaController extends GetxController {
   }
 
   Stream<QuerySnapshot> getLista2() {
-    return FirebaseFirestore.instance.collection('encontrista').snapshots();
+    return FirebaseFirestore.instance
+        .collection('encontrista')
+        .orderBy('esposa.nome', descending: false)
+        //.where(        "esposa.nome",
+        // .where('esposa.nome', isGreaterThanOrEqualTo: 'ieda')
+        // .where('esposa.nome', isLessThanOrEqualTo: 'ieda' '~')
+
+        .snapshots();
+    // whereIn: ["MARIA MIRANDA", "ieda favilla"]).snapshots();
+    //.where("esposa", arrayContainsAny: ["MARIA"]).snapshots();
   }
 
   Future<bool> get(String id) async {
@@ -74,6 +87,81 @@ class EncontristaController extends GetxController {
       }
     } catch (e) {}
     return f;
+  }
+
+  gerarDadosTeste(BuildContext context) async {
+    print('enrtrei no get');
+    UsuariosModel usuariosModelAtivo = usuariosController.usuarioAtivo!.value;
+    try {
+      dio.Response response = await dio.Dio()
+          .get("https://geradorbrasileiro.com/api/faker/pessoa?limit=150");
+      // print(response.data['values']);
+      print('tamanho ${response.data['values'].length}');
+      for (var i = 0; i <= response.data['values'].length - 1; i++) {
+        usuariosController.usuarioAtivo!.value = UsuariosModel(
+            nome: 'casal$i',
+            paroquia: 141,
+            ultimoAcesso: DateTime.now(),
+            grupo: 2,
+            bloqueado: false,
+            emails: [Emails(email: '')]);
+        // ignore: use_build_context_synchronously
+        await usuariosController.addUser(context, 'casal$i', '123456');
+        final random = Random();
+        print(DateFormat('dd/MM/yyyy')
+            .parse(response.data['values'][i]['dataNascimento']));
+        var parsedDate = DateFormat('dd/MM/yyyy')
+            .parse(response.data['values'][i]['dataNascimento']);
+        print(parsedDate);
+        encontristaModel = EncontristaModel(
+            marido: Marido(
+                nome: response.data['values'][i]['pai'],
+                photo: 'photo',
+                nascimento: parsedDate
+                    .subtract(Duration(days: random.nextInt(8000 - 100))),
+                telefone: ' ',
+                email: ' '),
+            esposa: Esposa(
+                nome: response.data['values'][i]['mae'],
+                photo: '',
+                nascimento: parsedDate
+                    .subtract(Duration(days: random.nextInt(10000 - 100))),
+                telefone: '',
+                email: ''),
+            casamento: Casamento(
+                data: parsedDate.subtract(Duration(days: random.nextInt(5000))),
+                igreja: ''),
+            endereco: Endereco(
+                logradouro: response.data['values'][i]['endereco']
+                    ['logradouro'],
+                bairro: response.data['values'][i]['endereco']['bairro'],
+                cidade: response.data['values'][i]['endereco']['cidade'],
+                estado: response.data['values'][i]['endereco']['estado'],
+                cep: int.parse(response.data['values'][i]['endereco']['cep']
+                    .toString()
+                    .replaceAll('-', '')),
+                complemento: response.data['values'][i]['endereco']
+                    ['complemento']),
+            filhos: [
+              Filhos(
+                  nome: response.data['values'][i]['nome'],
+                  dataNascimento: parsedDate,
+                  sexo: ''),
+              Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
+              Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
+              Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
+            ],
+            encontro: [
+              Encontro(equipe: '', ano: 0, coordenador: false, observacao: '')
+            ]);
+        gravar();
+        print('gravou casal$i');
+        print(response.data['values'][i]['mae']);
+        print(response.data['values'][i]['pai']);
+      }
+    } catch (e) {
+      print('erro $e');
+    }
   }
 
   Future<bool> gravar() async {

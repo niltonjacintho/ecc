@@ -1,3 +1,4 @@
+import 'package:ecc/app/modules/encontrista/controllers/encontrista_controller.dart';
 import 'package:ecc/app/modules/encontrista/views/encontrista_list_view.dart';
 import 'package:ecc/app/modules/encontrista/views/encontrista_view.dart';
 import 'package:ecc/app/modules/home/controllers/navbar_class.dart';
@@ -21,6 +22,8 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     UsuariosController usuariosController = Get.put(UsuariosController());
+    EncontristaController encontristaController =
+        Get.put(EncontristaController());
     return Scaffold(
       drawer: const NavBar(),
       floatingActionButton: buildBoomMenu(),
@@ -73,6 +76,18 @@ class HomeView extends GetView<HomeController> {
                   child: Center(
                       child: GestureDetector(
                           onTap: () => Get.to(const EncontristaListView()),
+                          child: const Text('Em desenvolvimento.'))),
+                );
+                break;
+              case 2:
+                return Container(
+                  color: const Color.fromARGB(255, 53, 53, 186),
+                  child: Center(
+                      child: GestureDetector(
+                          onTap: () {
+                            encontristaController.gerarDadosTeste(context);
+                            print('done');
+                          },
                           child: const Text('Em desenvolvimento.'))),
                 );
                 break;
