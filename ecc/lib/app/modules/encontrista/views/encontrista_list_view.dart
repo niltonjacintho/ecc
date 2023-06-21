@@ -40,6 +40,9 @@ class EncontristaListView extends GetView<EncontristaController> {
                   padding: const EdgeInsets.only(
                       top: 8, left: 8, right: 8, bottom: 20),
                   child: ListTile(
+                    onTap: () {
+                      encontristaController.getListaAniversariantes(01);
+                    },
                     leading: CircleAvatar(
                       backgroundColor: Colors.pink,
                       child: Text(

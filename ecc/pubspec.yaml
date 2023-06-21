@@ -11,6 +11,8 @@ dependencies:
   get: 4.6.5
   flutter: 
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter    
   firebase_auth: ^4.6.0
   google_sign_in: ^6.1.0
   icons_plus: ^4.0.0

@@ -88,7 +88,7 @@ class HomeView extends GetView<HomeController> {
                             encontristaController.gerarDadosTeste(context);
                             print('done');
                           },
-                          child: const Text('Em desenvolvimento.'))),
+                          child: const Text('Geração de dados para teste'))),
                 );
                 break;
               default:

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class EncontristaModel {
   Marido marido = Marido(
@@ -68,6 +69,7 @@ class Marido {
   DateTime nascimento = DateTime(1900);
   String telefone = ' ';
   String email = ' ';
+  final int? mesAniversario = 0;
   Marido({
     required this.nome,
     required this.photo,
@@ -86,12 +88,18 @@ class Marido {
   }
 
   Map<String, dynamic> toJson() {
+    // initializeDateFormatting('pt_BR', null);
     final data = <String, dynamic>{};
     data['nome'] = nome == '' ? '.setado' : nome;
     data['photo'] = photo == '' ? '.' : photo;
     data['nascimento'] = nascimento;
     data['telefone'] = telefone == '' ? '.' : telefone;
     data['email'] = email == '' ? '.' : email;
+    data['mesAniversario'] = nascimento.month;
+    data['aniversario'] =
+        DateTime(nascimento.day, nascimento.month, DateTime.now().year);
+    data['aniversarioDiaSemana'] = DateFormat('EEEE', 'pt-br').format(
+        DateTime(nascimento.day, nascimento.month, DateTime.now().year));
     return data;
   }
 }
@@ -131,6 +139,10 @@ class Esposa {
     data['nascimento'] = nascimento;
     data['telefone'] = telefone;
     data['email'] = email;
+    data['mesAniversario'] = nascimento.month;
+    data['aniversarioDiaSemana'] = DateFormat('EEEE', 'pt-br').format(
+        DateTime(nascimento.day, nascimento.month, DateTime.now().year));
+
     return data;
   }
 }
@@ -190,6 +202,10 @@ class Casamento {
     final dataBase = <String, dynamic>{};
     dataBase['data'] = data;
     dataBase['igreja'] = igreja;
+    dataBase['mes'] = data.month;
+    dataBase['aniversarioDiaSemana'] = DateFormat('EEEE', 'pt-br')
+        .format(DateTime(data.day, data.month, DateTime.now().year));
+
     return dataBase;
   }
 }
@@ -216,6 +232,9 @@ class Filhos {
     data['nome'] = nome;
     data['data_nascimento'] = dataNascimento;
     data['sexo'] = sexo;
+    data['mesAniversario'] = dataNascimento.month;
+    data['aniversarioDiaSemana'] = DateFormat('EEEE', 'pt-br').format(DateTime(
+        dataNascimento.day, dataNascimento.month, DateTime.now().year));
     return data;
   }
 }

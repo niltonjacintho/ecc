@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
+import 'package:ecc/app/modules/encontrista/model/encontristaAniversariante_model.dart';
 import 'package:ecc/app/modules/encontrista/model/encontrista_model.dart';
 import 'package:ecc/app/modules/usuarios/controllers/usuarios_controller.dart';
 import 'package:ecc/app/modules/usuarios/model/usuario_model.dart';
@@ -20,6 +21,10 @@ class EncontristaController extends GetxController {
   Rx<GlobalKey<FormState>> formKeyEsposo = GlobalKey<FormState>().obs;
   RxList<EncontristaModel> lista = <EncontristaModel>[].obs;
 
+  List<EncontristaAniversariante> listaAniversariantes = [];
+
+  var db = FirebaseFirestore.instance.collection('encontrista');
+
   final listaPaginas = [
     {'nome': 'Esposa', 'descricao': 'Dados do Casal'},
     {'nome': 'Marido', 'descricao': 'Dados do Casal'},
@@ -34,8 +39,7 @@ class EncontristaController extends GetxController {
   }
 
   Stream<QuerySnapshot> getLista2() {
-    return FirebaseFirestore.instance
-        .collection('encontrista')
+    return db
         .orderBy('esposa.nome', descending: false)
         //.where(        "esposa.nome",
         // .where('esposa.nome', isGreaterThanOrEqualTo: 'ieda')
@@ -46,8 +50,74 @@ class EncontristaController extends GetxController {
     //.where("esposa", arrayContainsAny: ["MARIA"]).snapshots();
   }
 
+  void fillListaAniversario(QueryDocumentSnapshot<Map<String, dynamic>> element,
+      String campo, String nome, String detalhe, String tipoAniversario) {
+    var d = element[campo].toDate();
+    listaAniversariantes.add(EncontristaAniversariante(
+        nome: nome,
+        detalhes: detalhe,
+        dia: DateTime(DateTime.now().year, d.month, d.day),
+        diaSemana: DateFormat('EEEE', 'pt-br').format(d),
+        tipo: tipoAniversario));
+  }
+
+  getListaAniversariantes(int mes) async {
+    //var esposa = await
+    // getBaseListAniversario('esposa.nascimento', mes).then(
+    //   (value) => value.forEach(
+    //     (element) {
+    //       for (var i = 0; i < element.docs.length; i++) {
+    //         var e = element.docs[i];
+    //         fillListaAniversario(e, 'esposa.nascimento', e['esposa.nome'],
+    //             e['marido.nome'], 'Natalicio');
+    //       }
+    //     },
+    //   ),
+    // );
+
+    // getBaseListAniversario('marido.nascimento', mes).then(
+    //   (value) => value.forEach(
+    //     (element) {
+    //       for (var i = 0; i < element.docs.length; i++) {
+    //         var e = element.docs[i];
+    //         fillListaAniversario(element.docs[i], 'marido.nascimento',
+    //             e['marido.nome'], e['esposa.nome'], 'Natalicio');
+    //       }
+    //     },
+    //   ),
+    // );
+
+    // getBaseListAniversario('casamento.data', mes).then(
+    //   (value) => value.forEach(
+    //     (element) {
+    //       for (var i = 0; i < element.docs.length; i++) {
+    //         var e = element.docs[i];
+    //         fillListaAniversario(e, 'casamento.data', e['esposa.nome'],
+    //             e['marido.nome'] + ' & ' + e['esposa.nome'], 'Casamento');
+    //       }
+    //     },
+    //   ),
+    // );
+
+    getBaseListAniversario('filhos.dataNascimento', mes).then(
+      (value) => value.forEach(
+        (element) {
+          for (var i = 0; i < element.docs.length; i++) {
+            var e = element.docs[i];
+            fillListaAniversario(e, 'filhos.dataNascimento', e['filhos.nome'],
+                e['marido.nome'] + ' & ' + e['esposa.nome'], 'Filhos');
+          }
+        },
+      ),
+    );
+  }
+
+  Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getBaseListAniversario(
+      String chave, int mes) async {
+    return db.where('esposa.mesAniversario', isEqualTo: mes).snapshots();
+  }
+
   Future<bool> get(String id) async {
-    print('%%%%%%%%%%%%%%%%%%%%%%%  GET ');
     try {
       await Firebase.initializeApp();
       final CollectionReference encontristaCollection =
@@ -173,9 +243,6 @@ class EncontristaController extends GetxController {
           .doc(usuariosController.usuarioAtivo!.value
               .nome) //configController.usuariosModel!.nome.trim())
           .set(encontristaModel!.toJson());
-      print('gravou  -  ${encontristaModel!.toJson()}');
-      //
-      //
       return true;
     } catch (e) {
       print(' ========================= mensagem de erro  ${e.toString()} ');
