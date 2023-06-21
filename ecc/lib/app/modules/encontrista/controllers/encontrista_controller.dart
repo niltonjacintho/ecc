@@ -23,7 +23,9 @@ class EncontristaController extends GetxController {
 
   List<EncontristaAniversariante> listaAniversariantes = [];
 
-  var db = FirebaseFirestore.instance.collection('encontrista');
+  static final db = FirebaseFirestore.instance.collection('encontrista');
+  static final dbFilhos =
+      FirebaseFirestore.instance.collection('encontrista_filhos');
 
   final listaPaginas = [
     {'nome': 'Esposa', 'descricao': 'Dados do Casal'},
@@ -39,15 +41,7 @@ class EncontristaController extends GetxController {
   }
 
   Stream<QuerySnapshot> getLista2() {
-    return db
-        .orderBy('esposa.nome', descending: false)
-        //.where(        "esposa.nome",
-        // .where('esposa.nome', isGreaterThanOrEqualTo: 'ieda')
-        // .where('esposa.nome', isLessThanOrEqualTo: 'ieda' '~')
-
-        .snapshots();
-    // whereIn: ["MARIA MIRANDA", "ieda favilla"]).snapshots();
-    //.where("esposa", arrayContainsAny: ["MARIA"]).snapshots();
+    return db.orderBy('esposa.nome', descending: false).snapshots();
   }
 
   void fillListaAniversario(QueryDocumentSnapshot<Map<String, dynamic>> element,
@@ -63,66 +57,61 @@ class EncontristaController extends GetxController {
 
   getListaAniversariantes(int mes) async {
     //var esposa = await
-    // getBaseListAniversario('esposa.nascimento', mes).then(
-    //   (value) => value.forEach(
-    //     (element) {
-    //       for (var i = 0; i < element.docs.length; i++) {
-    //         var e = element.docs[i];
-    //         fillListaAniversario(e, 'esposa.nascimento', e['esposa.nome'],
-    //             e['marido.nome'], 'Natalicio');
-    //       }
-    //     },
-    //   ),
-    // );
-
-    // getBaseListAniversario('marido.nascimento', mes).then(
-    //   (value) => value.forEach(
-    //     (element) {
-    //       for (var i = 0; i < element.docs.length; i++) {
-    //         var e = element.docs[i];
-    //         fillListaAniversario(element.docs[i], 'marido.nascimento',
-    //             e['marido.nome'], e['esposa.nome'], 'Natalicio');
-    //       }
-    //     },
-    //   ),
-    // );
-
-    // getBaseListAniversario('casamento.data', mes).then(
-    //   (value) => value.forEach(
-    //     (element) {
-    //       for (var i = 0; i < element.docs.length; i++) {
-    //         var e = element.docs[i];
-    //         fillListaAniversario(e, 'casamento.data', e['esposa.nome'],
-    //             e['marido.nome'] + ' & ' + e['esposa.nome'], 'Casamento');
-    //       }
-    //     },
-    //   ),
-    // );
-
-    getBaseListAniversario('filhos.dataNascimento', mes).then(
+    getBaseListAniversario('esposa.nascimento', mes).then(
       (value) => value.forEach(
         (element) {
           for (var i = 0; i < element.docs.length; i++) {
             var e = element.docs[i];
-            fillListaAniversario(e, 'filhos.dataNascimento', e['filhos.nome'],
-                e['marido.nome'] + ' & ' + e['esposa.nome'], 'Filhos');
+            fillListaAniversario(e, 'esposa.nascimento', e['esposa.nome'],
+                e['marido.nome'], 'Natalicio');
           }
         },
       ),
+    );
+
+    getBaseListAniversario('marido.nascimento', mes).then(
+      (value) => value.forEach(
+        (element) {
+          for (var i = 0; i < element.docs.length; i++) {
+            var e = element.docs[i];
+            fillListaAniversario(element.docs[i], 'marido.nascimento',
+                e['marido.nome'], e['esposa.nome'], 'Natalicio');
+          }
+        },
+      ),
+    );
+
+    getBaseListAniversario('casamento.data', mes).then(
+      (value) => value.forEach(
+        (element) {
+          for (var i = 0; i < element.docs.length; i++) {
+            var e = element.docs[i];
+            fillListaAniversario(e, 'casamento.data', e['esposa.nome'],
+                e['marido.nome'] + ' & ' + e['esposa.nome'], 'Casamento');
+          }
+        },
+      ),
+    );
+    dbFilhos.where('mesAniversario', isEqualTo: mes).snapshots().forEach(
+      (element) {
+        for (var i = 0; i < element.docs.length; i++) {
+          var e = element.docs[i];
+          fillListaAniversario(
+              e, 'data_nascimento', e['nome'], 'pais esposa.nome', 'Filhos');
+        }
+      },
     );
   }
 
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getBaseListAniversario(
       String chave, int mes) async {
-    return db.where('esposa.mesAniversario', isEqualTo: mes).snapshots();
+    return db.where(chave, isEqualTo: mes).snapshots();
   }
 
   Future<bool> get(String id) async {
     try {
       await Firebase.initializeApp();
-      final CollectionReference encontristaCollection =
-          FirebaseFirestore.instance.collection('encontrista');
-      await encontristaCollection
+      await db
           .doc(id
               .trim()
               .toLowerCase()) //configController.usuariosModel!.nome.trim())
@@ -214,12 +203,26 @@ class EncontristaController extends GetxController {
                     ['complemento']),
             filhos: [
               Filhos(
-                  nome: response.data['values'][i]['nome'],
+                nome: response.data['values'][i]['nome'],
+                dataNascimento: parsedDate,
+                sexo: '',
+                owner: usuariosController.usuarioAtivo!.value.nome,
+              ),
+              Filhos(
+                  nome: '',
                   dataNascimento: parsedDate,
-                  sexo: ''),
-              Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
-              Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
-              Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
+                  sexo: '',
+                  owner: usuariosController.usuarioAtivo!.value.nome),
+              Filhos(
+                  nome: '',
+                  dataNascimento: parsedDate,
+                  sexo: '',
+                  owner: usuariosController.usuarioAtivo!.value.nome),
+              Filhos(
+                  nome: '',
+                  dataNascimento: parsedDate,
+                  sexo: '',
+                  owner: usuariosController.usuarioAtivo!.value.nome),
             ],
             encontro: [
               Encontro(equipe: '', ano: 0, coordenador: false, observacao: '')
@@ -237,12 +240,18 @@ class EncontristaController extends GetxController {
   Future<bool> gravar() async {
     try {
       await Firebase.initializeApp();
-      final CollectionReference encontristaCollection =
-          FirebaseFirestore.instance.collection('encontrista');
-      await encontristaCollection
-          .doc(usuariosController.usuarioAtivo!.value
-              .nome) //configController.usuariosModel!.nome.trim())
+      await db
+          .doc(usuariosController.usuarioAtivo!.value.nome)
           .set(encontristaModel!.toJson());
+      for (var i = 0; i < encontristaModel!.filhos.length; i++) {
+        final element = encontristaModel!.filhos[i];
+        element.owner = usuariosController.usuarioAtivo!.value.nome.trim();
+        await dbFilhos
+            .doc(
+                '${usuariosController.usuarioAtivo!.value.nome.trim()}_filho$i')
+            .set(element.toJson());
+      }
+
       return true;
     } catch (e) {
       print(' ========================= mensagem de erro  ${e.toString()} ');
@@ -280,10 +289,26 @@ class EncontristaController extends GetxController {
             cep: 0,
             complemento: ''),
         filhos: [
-          Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
-          Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
-          Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
-          Filhos(nome: '', dataNascimento: DateTime(1900), sexo: ''),
+          Filhos(
+              nome: '',
+              dataNascimento: DateTime(1900),
+              sexo: '',
+              owner: usuariosController.usuarioAtivo!.value.nome),
+          Filhos(
+              nome: '',
+              dataNascimento: DateTime(1900),
+              sexo: '',
+              owner: usuariosController.usuarioAtivo!.value.nome),
+          Filhos(
+              nome: '',
+              dataNascimento: DateTime(1900),
+              sexo: '',
+              owner: usuariosController.usuarioAtivo!.value.nome),
+          Filhos(
+              nome: '',
+              dataNascimento: DateTime(1900),
+              sexo: '',
+              owner: usuariosController.usuarioAtivo!.value.nome),
         ],
         encontro: [
           Encontro(equipe: '', ano: 0, coordenador: false, observacao: '')
