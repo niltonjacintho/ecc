@@ -15,7 +15,7 @@ class EncontristaModel {
       complemento: '');
   Casamento casamento = Casamento(data: DateTime(2000), igreja: '');
   List<Filhos> filhos = [
-    Filhos(nome: '', dataNascimento: DateTime(2000), sexo: '')
+    Filhos(nome: '', dataNascimento: DateTime(2000), sexo: '', owner: '')
   ];
   List<Encontro> encontro = [
     Encontro(equipe: '', ano: 2000, coordenador: false, observacao: '')
@@ -55,7 +55,7 @@ class EncontristaModel {
     data['esposa'] = esposa.toJson();
     data['endereco'] = endereco.toJson();
     data['casamento'] = casamento.toJson();
-    data['filhos'] = filhos.map((e) => e.toJson()).toList();
+    // data['filhos'] = filhos.map((e) => e.toJson()).toList();
     data['encontro'] = encontro.map((e) => e.toJson()).toList();
     return data;
 
@@ -117,11 +117,6 @@ class Esposa {
     required this.telefone,
     required this.email,
   });
-  // late final String? nome;
-  // late final String photo;
-  // late final DateTime nascimento;
-  // late final String telefone;
-  // late final String email;
 
   Esposa.fromJson(Map<String, dynamic> json) {
     Timestamp t = json['nascimento'];
@@ -214,10 +209,12 @@ class Filhos {
   String nome = '';
   DateTime dataNascimento = DateTime(1900);
   String sexo = '';
+  String owner = '';
   Filhos({
     required this.nome,
     required this.dataNascimento,
     required this.sexo,
+    required this.owner,
   });
 
   Filhos.fromJson(Map<String, dynamic> json) {
@@ -225,6 +222,7 @@ class Filhos {
     nome = json['nome'];
     dataNascimento = t.toDate();
     sexo = json['sexo'];
+    owner = json['owner'];
   }
 
   Map<String, dynamic> toJson() {
@@ -235,6 +233,7 @@ class Filhos {
     data['mesAniversario'] = dataNascimento.month;
     data['aniversarioDiaSemana'] = DateFormat('EEEE', 'pt-br').format(DateTime(
         dataNascimento.day, dataNascimento.month, DateTime.now().year));
+    data['owner'] = owner;
     return data;
   }
 }
