@@ -1,8 +1,8 @@
 import 'package:ecc/app/modules/encontrista/controllers/encontrista_controller.dart';
+import 'package:ecc/app/modules/encontrista/views/encontrista_aniversarios_view.dart';
 import 'package:ecc/app/modules/encontrista/views/encontrista_list_view.dart';
 import 'package:ecc/app/modules/encontrista/views/encontrista_view.dart';
 import 'package:ecc/app/modules/home/controllers/navbar_class.dart';
-import 'package:ecc/app/modules/loginuser/views/loginuser_view.dart';
 import 'package:ecc/app/modules/noticias/noticias_list/views/noticias_noticias_list_view.dart';
 import 'package:ecc/app/modules/paroquias/views/paroquias_view.dart';
 import 'package:ecc/app/modules/usuarios/controllers/usuarios_controller.dart';
@@ -121,12 +121,12 @@ class HomeView extends GetView<HomeController> {
 //          child: Icon(Icons.accessibility, color: Colors.black, size: 40,),
             child: Image.asset('assets/images/logout_icon.png',
                 color: Colors.grey[850]),
-            title: "Sair",
+            title: "Encontristas",
             titleColor: Colors.grey[850]!,
-            subtitle: "Encerrar esta sessão",
+            subtitle: "Lista de todos os nossos membros!",
             subTitleColor: Colors.grey[850]!,
             backgroundColor: Colors.grey[50]!,
-            onTap: () => Get.off(LoginuserView()),
+            onTap: () => Get.to(const EncontristaListView()),
             elevation: 10,
           ),
           MenuItemModel(
@@ -159,7 +159,7 @@ class HomeView extends GetView<HomeController> {
             subtitle: "Lista dos nossos aniversariantes de casamento tb",
             subTitleColor: Colors.white,
             backgroundColor: Colors.blue,
-            onTap: () => print('FOURTH CHILD'),
+            onTap: () => Get.to(const EncontristaAniversariosPage()),
             elevation: 10,
           ),
           MenuItemModel(

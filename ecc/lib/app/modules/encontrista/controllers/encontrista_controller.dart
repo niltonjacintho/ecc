@@ -55,52 +55,59 @@ class EncontristaController extends GetxController {
         tipo: tipoAniversario));
   }
 
-  getListaAniversariantes(int mes) async {
+  Future<List<EncontristaAniversariante>> getListaAniversariantes(
+      int mes) async {
     //var esposa = await
-    getBaseListAniversario('esposa.nascimento', mes).then(
-      (value) => value.forEach(
-        (element) {
-          for (var i = 0; i < element.docs.length; i++) {
-            var e = element.docs[i];
-            fillListaAniversario(e, 'esposa.nascimento', e['esposa.nome'],
-                e['marido.nome'], 'Natalicio');
-          }
-        },
-      ),
-    );
-
-    getBaseListAniversario('marido.nascimento', mes).then(
-      (value) => value.forEach(
-        (element) {
-          for (var i = 0; i < element.docs.length; i++) {
-            var e = element.docs[i];
-            fillListaAniversario(element.docs[i], 'marido.nascimento',
-                e['marido.nome'], e['esposa.nome'], 'Natalicio');
-          }
-        },
-      ),
-    );
-
-    getBaseListAniversario('casamento.data', mes).then(
-      (value) => value.forEach(
-        (element) {
-          for (var i = 0; i < element.docs.length; i++) {
-            var e = element.docs[i];
-            fillListaAniversario(e, 'casamento.data', e['esposa.nome'],
-                e['marido.nome'] + ' & ' + e['esposa.nome'], 'Casamento');
-          }
-        },
-      ),
-    );
-    dbFilhos.where('mesAniversario', isEqualTo: mes).snapshots().forEach(
-      (element) {
+    listaAniversariantes = [];
+    await db.where('esposa.mesAniversario', isEqualTo: mes).snapshots().forEach(
+      (element) async {
         for (var i = 0; i < element.docs.length; i++) {
           var e = element.docs[i];
-          fillListaAniversario(
-              e, 'data_nascimento', e['nome'], 'pais esposa.nome', 'Filhos');
+          fillListaAniversario(e, 'esposa.nascimento', e['esposa.nome'],
+              e['marido.nome'], 'Natalicio');
         }
+        await db
+            .where('marido.mesAniversario', isEqualTo: mes)
+            .snapshots()
+            .forEach(
+          (element) async {
+            for (var i = 0; i < element.docs.length; i++) {
+              var e = element.docs[i];
+              fillListaAniversario(element.docs[i], 'marido.nascimento',
+                  e['marido.nome'], e['esposa.nome'], 'Natalicio');
+            }
+            await db
+                .where('casamento.data', isEqualTo: mes)
+                .snapshots()
+                .forEach(
+              (element) async {
+                for (var i = 0; i < element.docs.length; i++) {
+                  var e = element.docs[i];
+                  fillListaAniversario(e, 'casamento.data', e['esposa.nome'],
+                      e['marido.nome'] + ' & ' + e['esposa.nome'], 'Casamento');
+                }
+                await dbFilhos
+                    .where('mesAniversario', isEqualTo: mes)
+                    .snapshots()
+                    .forEach(
+                  (element) {
+                    for (var i = 0; i < element.docs.length; i++) {
+                      var e = element.docs[i];
+                      if (e['nome'].toString().trim() != '') {
+                        fillListaAniversario(e, 'data_nascimento', e['nome'],
+                            'pais esposa.nome', 'Filhos');
+                      }
+                    }
+                  },
+                );
+              },
+            );
+          },
+        );
       },
     );
+
+    return Future.value(listaAniversariantes);
   }
 
   Future<Stream<QuerySnapshot<Map<String, dynamic>>>> getBaseListAniversario(
