@@ -2,31 +2,27 @@ class EncontristaAniversariante {
   EncontristaAniversariante({
     required this.nome,
     required this.detalhes,
-    required this.dia,
-    required this.diaSemana,
-    required this.tipo,
+    required this.data,
+    required this.campo,
   });
   late final String nome;
   late final String detalhes;
-  late final DateTime dia;
-  late final String diaSemana;
-  late final String tipo;
+  late final String data;
+  late final String campo;
 
   EncontristaAniversariante.fromJson(Map<String, dynamic> json) {
     nome = json['nome'];
     detalhes = json['detalhes'];
-    dia = json['dia'];
-    diaSemana = json['diaSemana'];
-    tipo = json['tipo'];
+    data = json['data'];
+    data = json['campo'];
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['nome'] = nome;
     data['detalhes'] = detalhes;
-    data['dia'] = dia;
-    data['diaSemana'] = diaSemana;
-    data['tipo'] = tipo;
+    data['data'] = data;
+    data['campo'] = campo;
     return data;
   }
 }
