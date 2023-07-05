@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
 admin.initializeApp();
-export const WriteToFirestore = functions.firestore
+export const UpdateAniversarios = functions.firestore
     .document("encontrista/{encontristaId}")
     .onUpdate((change, context) => {
         const dado = change.after.data();
@@ -36,7 +36,7 @@ export const WriteToFirestore = functions.firestore
 
         const dataFinal = new Date();
         const diffInMilliseconds =
-        Math.abs(dataFinal.getTime() - datanascimento.getTime());
+            Math.abs(dataFinal.getTime() - datanascimento.getTime());
         const umDiaEmMilissegundos = 24 * 60 * 60 * 1000;
         const umAnoEmMilissegundos = 365 * umDiaEmMilissegundos;
         const anos = Math.floor(diffInMilliseconds / umAnoEmMilissegundos);
@@ -55,5 +55,26 @@ export const WriteToFirestore = functions.firestore
                 mes: datanascimento.getMonth(),
                 detalhes: diferencaString,
             });
+        console.log("DADOS DOS FILHOS", dado.filhos);
+        for (let i = 0; i < dado.filhos.length; i++) {
+            const element = dado.filhos[i];
+            if (element.nome.trim() != "") {
+                let nome = dado.esposa.nome.split(" ")[0];
+                nome += " e " + dado.marido.nome.split(" ")[0];
+                datanascimento = element.data_nascimento.toDate();
+                admin.firestore().collection("aniversarios")
+                    .doc(context.params.encontristaId + "_filho_" + i.toString())
+                    .set({
+                        nome: element.nome,
+                        tipo: "Filho",
+                        data: datanascimento,
+                        dia: datanascimento.getDate(),
+                        diaSemana: datanascimento.getDay(),
+                        mes: datanascimento.getMonth(),
+                        detalhes: nome,
+                    });
+                console.log(element);
+            }
+        }
         return null;
     });
