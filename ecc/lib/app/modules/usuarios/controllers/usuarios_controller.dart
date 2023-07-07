@@ -99,31 +99,33 @@ class UsuariosController extends GetxController {
       if (decri == '') {
         return false;
       } else {
-        UserCredential? userCredential = await _signInWithGoogle();
+        if (!configController.isWebEnvironment()) {
+          UserCredential? userCredential = await _signInWithGoogle();
 
-        List<Emails> emails = [];
-        try {
-          snapshot['emails']
-              .forEach((value) => emails.add(Emails(email: value['email'])));
-        } catch (e) {}
-        if (!containsEmail(
-            emails, Emails(email: userCredential!.user!.email!))) {
-          emails.add(Emails(email: userCredential.user!.email.toString()));
+          List<Emails> emails = [];
+          try {
+            snapshot['emails']
+                .forEach((value) => emails.add(Emails(email: value['email'])));
+          } catch (e) {}
+          if (!containsEmail(
+              emails, Emails(email: userCredential!.user!.email!))) {
+            emails.add(Emails(email: userCredential.user!.email.toString()));
+          }
+          UsuariosModel usuariosModel = UsuariosModel(
+              nome: snapshot['nome'],
+              paroquia: 0,
+              ultimoAcesso: DateTime.now(),
+              grupo: 2,
+              bloqueado: snapshot['bloqueado'],
+              emails: emails);
+          usuarioAtivo!.value = usuariosModel;
+          pref.setString("usuario", usuariosModel.nome);
+          configController.usuariosModel = usuariosModel;
+          usuariosModel.senha = snapshot['senha'];
+          await _usuariosCollection
+              .doc(usuariosModel.nome.replaceAll(' ', ''))
+              .set(usuariosModel.toJson());
         }
-        UsuariosModel usuariosModel = UsuariosModel(
-            nome: snapshot['nome'],
-            paroquia: 0,
-            ultimoAcesso: DateTime.now(),
-            grupo: 2,
-            bloqueado: snapshot['bloqueado'],
-            emails: emails);
-        usuarioAtivo!.value = usuariosModel;
-        pref.setString("usuario", usuariosModel.nome);
-        configController.usuariosModel = usuariosModel;
-        usuariosModel.senha = snapshot['senha'];
-        await _usuariosCollection
-            .doc(usuariosModel.nome.replaceAll(' ', ''))
-            .set(usuariosModel.toJson());
       }
     }
     return existe;

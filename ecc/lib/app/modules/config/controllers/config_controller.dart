@@ -12,6 +12,7 @@ import 'package:jwt_io/jwt_io.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 enum TipoPhoto { galeria, camera }
 
@@ -26,6 +27,10 @@ class ConfigController extends GetxController {
   // UsuariosController usuariosController = Get.put(UsuariosController());
 
   double get fontSize => _fontSize.value;
+
+  bool isWebEnvironment() {
+    return kIsWeb;
+  }
 
   MaskTextInputFormatter get phoneMaskFormatter => MaskTextInputFormatter(
       mask: '(##) #-####-####',

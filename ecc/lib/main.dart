@@ -1,4 +1,7 @@
 import 'package:ecc/app/modules/config/controllers/config_controller.dart';
+import 'package:ecc/app/modules/home/views/home_view.dart';
+import 'package:ecc/app/modules/login/views/login_view.dart';
+import 'package:ecc/app/modules/loginuser/views/loginuser_view.dart';
 import 'package:ecc/app/modules/usuarios/controllers/usuarios_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +13,16 @@ import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+    apiKey: 'AIzaSyC3LFuRwgjhHzBH_bFG7B5dGS5NO_dPXz0',
+    appId: '1:1035136043525:web:bbfd4b463d8beda3b52a6c',
+    messagingSenderId: '1035136043525',
+    projectId: 'ecc-apk',
+    authDomain: 'ecc-apk.firebaseapp.com',
+    databaseURL: 'https://ecc-apk.firebaseio.com',
+    storageBucket: 'ecc-apk.appspot.com',
+  ));
   initializeDateFormatting('pt_BR', null);
 
   ConfigController configController = Get.put(ConfigController());
@@ -25,7 +37,10 @@ void main() async {
   runApp(
     GetMaterialApp(
       title: "E.C.C.",
-      initialRoute: isTokenOk <= 0 ? AppPages.LOGINUSER : AppPages.INITIAL,
+      home: ((isTokenOk > configController.diasToken) ||
+              (configController.isWebEnvironment()))
+          ? LoginuserView()
+          : const HomeView(),
       getPages: AppPages.routes,
     ),
   );

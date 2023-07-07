@@ -79,6 +79,7 @@ class EncontristaAniversariosPage extends GetView<EncontristaController> {
           stream: FirebaseFirestore.instance
               .collection('aniversarios')
               .where('mes', isEqualTo: mes.value)
+              .orderBy('dia')
               .orderBy('nome')
               .snapshots(),
           builder: (context, snapshot) {
