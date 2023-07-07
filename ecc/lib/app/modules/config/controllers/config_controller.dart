@@ -8,8 +8,10 @@ import 'package:ecc/app/modules/usuarios/model/usuario_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jwt_io/jwt_io.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:shared_preferences/shared_preferences.dart';
 
 enum TipoPhoto { galeria, camera }
 
@@ -17,8 +19,11 @@ enum TipoArquivoPhoto { Marido, Esposa, Casal }
 
 class ConfigController extends GetxController {
   final RxDouble _fontSize = 30.0.obs;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  int diasToken = 15;
 
   UsuariosModel? usuariosModel;
+  // UsuariosController usuariosController = Get.put(UsuariosController());
 
   double get fontSize => _fontSize.value;
 
@@ -173,6 +178,20 @@ class ConfigController extends GetxController {
     } catch (e) {
       retorno = e.toString();
       return '';
+    }
+  }
+
+  Future<int> isTokenOk() async {
+    final SharedPreferences prefs = await _prefs;
+    final token = prefs.getString('token');
+    if (token != null) {
+      Duration tokenTime = JwtToken.getTokenTime(token);
+      if (tokenTime.inDays >= diasToken) {
+        return -100;
+      }
+      return tokenTime.inDays;
+    } else {
+      return -1;
     }
   }
 }
