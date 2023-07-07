@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1035136043525",
+    "firebase_url": "https://ecc-apk.firebaseio.com",
+    "project_id": "ecc-apk",
+    "storage_bucket": "ecc-apk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035136043525:android:e5a9a3bf6847564fb52a6c",
+        "android_client_info": {
+          "package_name": "com.example.ecc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1035136043525-2f8142o7ic11ubcv90kdid412iu0sd4b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.ecc",
+            "certificate_hash": "95a85ded2af77cfd7da9885c4600bb52fefbd0a4"
+          }
+        },
+        {
+          "client_id": "1035136043525-4k5ff3rquopqacltrn90qpjssr89b95i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn0nYg6omX3fGNXfTf3p5CAQvZQDAPEps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1035136043525-4k5ff3rquopqacltrn90qpjssr89b95i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1035136043525-dt6rdak7jed6cpltohcue9u1dfu72lmn.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.ecc"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,14 +7,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:googleapis/photoslibrary/v1.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UsuariosController extends GetxController {
   final ConfigController configController = Get.put(ConfigController());
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: <String>[PhotosLibraryApi.photoslibraryReadonlyScope],
-  );
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  //   forceCodeForRefreshToken: true,
+  //   scopes: <String>[PhotosLibraryApi.photoslibraryReadonlyScope],
+  // );
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   BuildContext? context;
 
@@ -26,11 +28,6 @@ class UsuariosController extends GetxController {
   Future<void> cadastrarUsuario(Map<String, dynamic> usuario) async {
     await _usuariosCollection.add(usuario);
   }
-
-  // Future<List<Map<String, dynamic>>> buscarUsuarios() async {
-  //   final querySnapshot = await _usuariosCollection.get();
-  //   return querySnapshot.docs.map((doc) => doc.data()).toList();
-  // }
 
   Future<void> atualizarUsuario(
       String usuarioId, Map<String, dynamic> usuarioAtualizado) async {
@@ -88,6 +85,7 @@ class UsuariosController extends GetxController {
 
   Future<bool> login(String user, String pass) async {
     user = user.replaceAll(" ", "");
+    final SharedPreferences pref = await _prefs;
     var existe = await userExists(user);
     if (existe) {
       final document = _usuariosCollection.doc(user);
@@ -120,6 +118,7 @@ class UsuariosController extends GetxController {
             bloqueado: snapshot['bloqueado'],
             emails: emails);
         usuarioAtivo!.value = usuariosModel;
+        pref.setString("usuario", usuariosModel.nome);
         configController.usuariosModel = usuariosModel;
         usuariosModel.senha = snapshot['senha'];
         await _usuariosCollection
@@ -131,6 +130,7 @@ class UsuariosController extends GetxController {
   }
 
   Future<UserCredential?> _signInWithGoogle() async {
+    final SharedPreferences prefs = await _prefs;
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       final GoogleSignInAuthentication googleAuth =
@@ -143,7 +143,7 @@ class UsuariosController extends GetxController {
 
       final UserCredential userCredential =
           await _auth.signInWithCredential(credential);
-
+      prefs.setString('token', googleAuth.idToken!);
       return userCredential;
     } catch (e) {
       configController.showDialog(context!,
@@ -152,6 +152,34 @@ class UsuariosController extends GetxController {
       return null;
     }
     return null;
+  }
+
+  @override
+  Future<bool> refresh() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String usuario = pref.getString("usuario")!;
+    configController.usuariosModel = usuarioAtivo!.value;
+    final document = _usuariosCollection.doc(usuario);
+    final snapshot = await document.get();
+    UserCredential? userCredential = await _signInWithGoogle();
+    List<Emails> emails = [];
+    try {
+      snapshot['emails']
+          .forEach((value) => emails.add(Emails(email: value['email'])));
+    } catch (e) {}
+    if (!containsEmail(emails, Emails(email: userCredential!.user!.email!))) {
+      emails.add(Emails(email: userCredential.user!.email.toString()));
+    }
+    UsuariosModel usuariosModel = UsuariosModel(
+        nome: snapshot['nome'],
+        paroquia: 0,
+        ultimoAcesso: DateTime.now(),
+        grupo: 2,
+        bloqueado: snapshot['bloqueado'],
+        emails: emails);
+    usuarioAtivo!.value = usuariosModel;
+    configController.usuariosModel = usuariosModel;
+    return Future.value(true);
   }
 
   @override
