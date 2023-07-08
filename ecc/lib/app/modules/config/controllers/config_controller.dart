@@ -173,7 +173,7 @@ class ConfigController extends GetxController {
           .child('images')
           .child(fileName);
 
-      final firebase_storage.UploadTask uploadTask = ref.putFile(image!);
+      final firebase_storage.UploadTask uploadTask = ref.p.putFile(image!);
       final firebase_storage.TaskSnapshot taskSnapshot = await uploadTask;
 
       await taskSnapshot.ref.getDownloadURL().then((value) => {

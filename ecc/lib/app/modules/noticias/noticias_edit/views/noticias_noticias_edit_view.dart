@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_web/image_picker_web.dart';
 
 import '../controllers/noticias_noticias_edit_controller.dart';
 
@@ -82,8 +83,9 @@ class NoticiasEditView extends GetView<NoticiasEditController> {
   }
 
   void _pickImage() async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
+    var picker = await ImagePickerWeb.getImageInfo;
+    // final picker = ImagePicker();
+    final pickedImage = await picker. .pickImage(source: ImageSource.gallery);
 
     if (pickedImage != null) {
       _selectedImage.value = File(pickedImage.path);
@@ -152,11 +154,12 @@ class NoticiasEditView extends GetView<NoticiasEditController> {
                     ],
                   ),
                   Obx(() {
+                    print(_selectedImage.value);
                     if (_selectedImage.value != null) {
                       return Column(
                         children: [
                           const SizedBox(height: 16.0),
-                          Image.file(
+                          Image.memory(pi) .file(
                             _selectedImage.value!,
                             height: 250,
                           ),
